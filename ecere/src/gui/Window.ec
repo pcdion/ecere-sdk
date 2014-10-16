@@ -1677,6 +1677,17 @@ private:
    public void ExternalPosition(int x, int y, int w, int h)
    {
       Position(x, y, w, h, false, true, true, true, false, false);
+      /* TO REVIEW: Redj's code trying to fix position saving
+      if(style.fixed)
+      {
+         if(state == normal)
+         {
+            normalAnchor = Anchor { left = x, top = y };
+            normalSizeAnchor = SizeAnchor { { w, h } };
+            anchored = false;
+         }
+      }
+      */
    }
 
    // (w, h): Full window size
