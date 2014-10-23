@@ -1557,6 +1557,26 @@ if distributed with the Ecere SDK Windows installer.
                                  ]
                               }
                            ]
+                        },
+                        {
+                           "FileName" : "edtaa3func.ec",
+                           "Options" : {
+                              "ExcludeFromBuild" : false
+                           },
+                           "Configurations" : [
+                              {
+                                 "Name" : "Vanilla",
+                                 "Options" : {
+                                    "ExcludeFromBuild" : true
+                                 }
+                              },
+                              {
+                                 "Name" : "Bootstrap",
+                                 "Options" : {
+                                    "ExcludeFromBuild" : true
+                                 }
+                              }
+                           ]
                         }
                      ],
                      "Options" : {

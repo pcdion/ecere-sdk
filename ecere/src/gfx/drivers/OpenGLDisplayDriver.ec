@@ -1615,6 +1615,7 @@ class OGLSurface : struct
    bool opaqueText;
    int xOffset;
    bool writingText;
+   bool writingOutline;
 
    float foreground[4], background[4], bitmapMult[4];
 } OGLSurface;
@@ -3477,6 +3478,18 @@ class OpenGLDisplayDriver : DisplayDriver
       oglSurface.writingText = true;
 
       glEnable(GL_TEXTURE_2D);
+
+      if(surface.outline.size)
+      {
+         ColorAlpha outlineColor = surface.outline.color;
+         glColor4ub(outlineColor.color.r, outlineColor.color.g, outlineColor.color.b, outlineColor.a);
+         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+         //glEnable(GL_BLEND);
+
+         oglSurface.writingOutline = true;
+         ((subclass(DisplayDriver))class(LFBDisplayDriver)).WriteText(display, surface, x, y, text, len);
+         oglSurface.writingOutline = false;
+      }
       glColor4fv(oglSurface.foreground);
 
       ((subclass(DisplayDriver))class(LFBDisplayDriver)).WriteText(display, surface, x, y, text, len);
