@@ -17,7 +17,10 @@
          "Folder" : "audio",
          "Files" : [
             "Makefile"
-         ]
+         ],
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
       },
       {
          "Folder" : "compiler",
@@ -230,13 +233,102 @@
          }
       },
       {
+         "Folder" : "installer",
+         "Files" : [
+            "Makefile"
+         ],
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "Folder" : "samples",
+         "Files" : [
+            "LICENSE"
+         ],
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "Folder" : "share",
+         "Files" : [
+            {
+               "Folder" : "applications",
+               "Files" : [
+                  "ecere.desktop"
+               ]
+            },
+            {
+               "Folder" : "man",
+               "Files" : [
+                  {
+                     "Folder" : "man1",
+                     "Files" : [
+                        "documentor.1",
+                        "ear.1",
+                        "ecc.1",
+                        "ecp.1",
+                        "ecs.1",
+                        "epj2make.1",
+                        "ide.1"
+                     ]
+                  }
+               ]
+            }
+         ],
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "configure",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
          "FileName" : "crossplatform.mk",
          "Options" : {
             "ExcludeFromBuild" : true
          }
       },
-      "default.cf",
-      "Makefile"
+      {
+         "FileName" : "default.cf",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "INSTALL",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "LICENSE",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "Makefile",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "NEWS",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      },
+      {
+         "FileName" : "README",
+         "Options" : {
+            "ExcludeFromBuild" : true
+         }
+      }
    ],
    "ResourcesPath" : "",
    "Resources" : [
