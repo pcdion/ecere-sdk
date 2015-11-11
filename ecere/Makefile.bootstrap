@@ -31,9 +31,10 @@ CONSOLE = -mwindows
 
 # INCLUDES
 
+_SDK_SRC_ROOT = ../
 _CF_DIR = .configs/
 
-include $(_CF_DIR)crossplatform.mk
+include $(_SDK_SRC_ROOT)crossplatform.mk
 include $(_CF_DIR)$(TARGET_PLATFORM)-$(COMPILER).cf
 
 # POST-INCLUDES VARIABLES

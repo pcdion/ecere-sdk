@@ -5,8 +5,10 @@ endif
 
 CONFIG := release
 
-include ../crossplatform.mk
-include ../default.cf
+_SDK_SRC_ROOT = ../
+
+include $(_SDK_SRC_ROOT)crossplatform.mk
+include $(_SDK_SRC_ROOT)default.cf
 
 all: ecp ecc ecs
 

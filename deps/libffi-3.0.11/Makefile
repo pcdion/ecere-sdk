@@ -30,10 +30,10 @@ CONSOLE = -mwindows
 
 # INCLUDES
 
-_CF_DIR = ../../
+_SDK_SRC_ROOT = ../../
 
-include $(_CF_DIR)crossplatform.mk
-include $(_CF_DIR)default.cf
+include $(_SDK_SRC_ROOT)crossplatform.mk
+include $(_SDK_SRC_ROOT)default.cf
 
 # POST-INCLUDES VARIABLES
 

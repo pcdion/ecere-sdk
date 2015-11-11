@@ -3,8 +3,10 @@
 
 # CROSS-PLATFORM MAGIC
 
-include ../crossplatform.mk
-include ../default.cf
+_SDK_SRC_ROOT = ../
+
+include $(_SDK_SRC_ROOT)crossplatform.mk
+include $(_SDK_SRC_ROOT)default.cf
 
 ifdef WINDOWS_TARGET
 all: freetype jpeg png gif ffi z

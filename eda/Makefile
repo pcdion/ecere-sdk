@@ -5,10 +5,10 @@ endif
 
 # CROSS-PLATFORM MAGIC
 
-_CF_DIR = ../
+_SDK_SRC_ROOT = ../
 
-include $(_CF_DIR)crossplatform.mk
-include $(_CF_DIR)default.cf
+include $(_SDK_SRC_ROOT)crossplatform.mk
+include $(_SDK_SRC_ROOT)default.cf
 
 all:
 	@$(call echo,Building Ecere Data Access layer...)

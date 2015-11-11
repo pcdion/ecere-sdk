@@ -878,6 +878,8 @@ update_ecs:
 
 troubleshoot:
 	@$(call echo,Printing values of some variables.)
+	@$(call echo,_SDK_SRC_ROOT=$(_SDK_SRC_ROOT))
+	@$(call echo,_CF_DIR=$(_CF_DIR))
 	@$(call echo,HOST_PLATFORM=$(HOST_PLATFORM))
 	@$(call echo,TARGET_PLATFORM=$(TARGET_PLATFORM))
 	@$(call echo,PLATFORM=$(PLATFORM))
