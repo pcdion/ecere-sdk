@@ -7295,10 +7295,13 @@ public:
             clip.bottom += absPosition.y;
          }
 
-         clip.left += decorations ? 0 : clientStart.x;
-         clip.top += decorations ? 0 : clientStart.y;
-         clip.right += decorations ? 0 : clientStart.x;
-         clip.bottom += decorations ? 0 : clientStart.y;
+         if(!nativeDecorations)
+         {
+            clip.left += decorations ? 0 : clientStart.x;
+            clip.top += decorations ? 0 : clientStart.y;
+            clip.right += decorations ? 0 : clientStart.x;
+            clip.bottom += decorations ? 0 : clientStart.y;
+         }
 
          if(display && display.flags.flipping)
          {
