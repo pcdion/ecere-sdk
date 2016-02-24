@@ -1113,7 +1113,7 @@ public:
    }
 }
 
-bool WriteMap(File f, Class type, Map map, int indent, bool eCON)
+static bool WriteMap(File f, Class type, Map map, int indent, bool eCON)
 {
    if(map)
    {
@@ -1132,7 +1132,7 @@ bool WriteMap(File f, Class type, Map map, int indent, bool eCON)
          else
             isFirst = false;
          for(i = 0; i<indent; i++) f.Puts("   ");
-         _WriteJSONObject(f, mapNodeClass, n, indent, eCON, eCON ? true : false);
+         WriteONObject(f, mapNodeClass, n, indent, eCON, eCON ? true : false);
       }
       f.Puts("\n");
       indent--;
@@ -1144,7 +1144,7 @@ bool WriteMap(File f, Class type, Map map, int indent, bool eCON)
    return true;
 }
 
-bool WriteArray(File f, Class type, Container array, int indent, bool eCON)
+static bool WriteArray(File f, Class type, Container array, int indent, bool eCON)
 {
    if(array)
    {
@@ -1218,7 +1218,7 @@ bool WriteArray(File f, Class type, Container array, int indent, bool eCON)
    return true;
 }
 
-bool WriteNumber(File f, Class type, DataValue value, int indent, bool eCON)
+static bool WriteNumber(File f, Class type, DataValue value, int indent, bool eCON)
 {
    char buffer[1024];
    bool needClass = eCON;
@@ -1280,7 +1280,7 @@ public bool WriteColorAlpha(File f, Class type, DataValue value, int indent, boo
    return true;
 }
 
-bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON)
+static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON)
 {
    if(!strcmp(type.name, "String") || !strcmp(type.dataTypeString, "char *"))
    {
@@ -1418,7 +1418,7 @@ bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON)
    }
    else if(type.type == normalClass || type.type == noHeadClass || type.type == structClass)
    {
-      _WriteJSONObject(f, type, value.p, indent, eCON, false);
+      WriteONObject(f, type, value.p, indent, eCON, false);
    }
    else if(eClass_IsDerived(type, class(ColorAlpha)))
    {
@@ -1437,18 +1437,29 @@ bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON)
    return true;
 }
 
-public bool WriteJSONObject(File f, Class objectType, void * object, int indent, bool eCON)
+public bool WriteJSONObject(File f, Class objectType, void * object, int indent)
 {
    bool result = false;
    if(object)
    {
-      result = _WriteJSONObject(f, objectType, object, indent, eCON, false);
+      result = WriteONObject(f, objectType, object, indent, false, false);
       f.Puts("\n");
    }
    return result;
 }
 
-static bool _WriteJSONObject(File f, Class objectType, void * object, int indent, bool eCON, bool omitDefaultIdentifier)
+public bool WriteECONObject(File f, Class objectType, void * object, int indent)
+{
+   bool result = false;
+   if(object)
+   {
+      result = WriteONObject(f, objectType, object, indent, true, false);
+      f.Puts("\n");
+   }
+   return result;
+}
+
+static bool WriteONObject(File f, Class objectType, void * object, int indent, bool eCON, bool omitDefaultIdentifier)
 {
    if(object)
    {
@@ -1692,7 +1703,7 @@ static bool _WriteJSONObject(File f, Class objectType, void * object, int indent
    return true;
 }
 
-Class eSystem_SuperFindClass(const String name, Module alternativeModule)
+static Class eSystem_SuperFindClass(const String name, Module alternativeModule)
 {
    Class _class = eSystem_FindClass(__thisModule, name);
    if(!_class && alternativeModule)
@@ -1702,7 +1713,7 @@ Class eSystem_SuperFindClass(const String name, Module alternativeModule)
    return _class;
 }
 
-bool isSubclass(const String name, Class type)
+static bool isSubclass(const String name, Class type)
 {
    Class _class = eSystem_SuperFindClass(name, type.module);
    if(eClass_IsDerived(_class, type))
