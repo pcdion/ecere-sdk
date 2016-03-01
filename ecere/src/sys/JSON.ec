@@ -30,11 +30,16 @@ public enum SetBool : uint
 };
 
 
+public class eCONParser : JSONParser
+{
+   eCON = true;
+}
+
 public class JSONParser
 {
 public:
    File f;
-   char pch;
+private:
    char ch;
    bool eCON;
 
@@ -210,10 +215,10 @@ public:
                   if(type.type != structClass)
                      value.p = 0;
                }
-               else if(isSubclass(string, type))
+               else if(isSubclass(type, string))
                {
                   void * object = value.p;
-                  Class subtype = eSystem_SuperFindClass(string, type.module);
+                  Class subtype = superFindClass(string, type.module);
                   SkipEmpty();
                   result = GetObject(subtype, &object);
                   if(result)
@@ -708,10 +713,10 @@ public:
                            offset = member._class.offset + member.offset;
                      }
                      else if(prop)
-                        type = eSystem_SuperFindClass(prop.dataTypeString, objectType.module);
+                        type = superFindClass(prop.dataTypeString, objectType.module);
                      else if(member)
                      {
-                        type = eSystem_SuperFindClass(member.dataTypeString, objectType.module);
+                        type = superFindClass(member.dataTypeString, objectType.module);
                         offset = member._class.offset + member.offset;
                      }
                   }
@@ -744,14 +749,14 @@ public:
                      member = eClass_FindDataMember(objectType, string, objectType.module, null, null);
                      if(member)
                      {
-                        type = eSystem_SuperFindClass(member.dataTypeString, objectType.module);
+                        type = superFindClass(member.dataTypeString, objectType.module);
                         offset = member._class.offset + member.offset;
                      }
                      else if(!member)
                      {
                         prop = eClass_FindProperty(objectType, string, objectType.module);
                         if(prop)
-                           type = eSystem_SuperFindClass(prop.dataTypeString, objectType.module);
+                           type = superFindClass(prop.dataTypeString, objectType.module);
                         else
                            PrintLn("Warning: member ", string, " not found in class ", (String)objectType.name);
                      }
@@ -1427,7 +1432,7 @@ static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCO
    else if(type.type == bitClass)
    {
       Class dataType;
-      dataType = eSystem_SuperFindClass(type.dataTypeString, type.module);
+      dataType = superFindClass(type.dataTypeString, type.module);
       WriteNumber(f, dataType, value, indent, eCON);
    }
    else if(type.type == systemClass || type.type == unitClass)
@@ -1539,7 +1544,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                         type = mapDataClass;
                      }
                      else
-                        type = eSystem_SuperFindClass(prop.dataTypeString, _class.module);
+                        type = superFindClass(prop.dataTypeString, _class.module);
 
                      if(!type)
                         PrintLn("warning: Unresolved data type ", (String)prop.dataTypeString);
@@ -1618,7 +1623,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                   DataMember member = (DataMember)prop;
                   DataValue value { };
                   uint offset;
-                  Class type = eSystem_SuperFindClass(member.dataTypeString, _class.module);
+                  Class type = superFindClass(member.dataTypeString, _class.module);
                   offset = member._class.offset + member.offset;
 
                   if(type)
@@ -1703,7 +1708,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
    return true;
 }
 
-static Class eSystem_SuperFindClass(const String name, Module alternativeModule)
+static Class superFindClass(const String name, Module alternativeModule)
 {
    Class _class = eSystem_FindClass(__thisModule, name);
    if(!_class && alternativeModule)
@@ -1713,9 +1718,9 @@ static Class eSystem_SuperFindClass(const String name, Module alternativeModule)
    return _class;
 }
 
-static bool isSubclass(const String name, Class type)
+static bool isSubclass(Class type, const String name)
 {
-   Class _class = eSystem_SuperFindClass(name, type.module);
+   Class _class = superFindClass(name, type.module);
    if(eClass_IsDerived(_class, type))
       return true;
    return false;
