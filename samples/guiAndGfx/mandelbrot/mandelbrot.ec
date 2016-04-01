@@ -11,7 +11,7 @@ void drawMandelbrot(Bitmap bmp, float range, Complex center, ColorAlpha * palett
    int x, y;
    int w = bmp.width, h = bmp.height;
    ColorAlpha * picture = (ColorAlpha *)bmp.picture;
-   double logOf2 = log(2);
+   double logOf2 = log(2), logOfPt5 = log(0.5);
    Complex d
    {
       w > h ? range : range * w / h,
@@ -41,7 +41,7 @@ void drawMandelbrot(Bitmap bmp, float range, Complex center, ColorAlpha * palett
 
             if(z2 >= 2*2)
             {
-               ii = (double)(i + 1 - log(0.5 * log(z2)) / logOf2);
+               ii = (double)(i + 1 - logOfPt5 - log(log(z2)) / logOf2);
                out = true;
                break;
             }
