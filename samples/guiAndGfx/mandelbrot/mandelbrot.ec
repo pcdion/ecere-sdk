@@ -29,13 +29,15 @@ void drawMandelbrot(Bitmap bmp, float range, Complex center, ColorAlpha * palett
          int i;
          double ii = 0;
          bool out = false;
+         double Za2 = Z.a * Z.a, Zb2 = Z.b * Z.b;
          for(i = 0; i < nIterations; i++)
          {
             double z2;
-            Z = { Z.a*Z.a - Z.b*Z.b, Z.a*Z.b + Z.b*Z.a };
+            Z = { Za2 - Zb2, 2*Z.a*Z.b };
             Z.a += C.a;
             Z.b += C.b;
-            z2 = Z.a * Z.a + Z.b * Z.b;
+            Za2 = Z.a * Z.a, Zb2 = Z.b * Z.b;
+            z2 = Za2 + Zb2;
 
             if(z2 >= 2*2)
             {
