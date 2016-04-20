@@ -465,15 +465,18 @@ struct __ecereNameSpace__ecere__com__Link * link;
 
 if(((struct __ecereNameSpace__ecere__com__Instance *)(char *)this)->_class->templateArgs[6].__anon1.__anon1.dataTypeClass && ((struct __ecereNameSpace__ecere__com__Instance *)(char *)this)->_class->templateArgs[6].__anon1.__anon1.dataTypeClass->type == 1)
 {
-link = (struct __ecereNameSpace__ecere__com__Link *)__ecereNameSpace__ecere__com__eSystem_New0(sizeof(unsigned char) * (sizeof(struct __ecereNameSpace__ecere__com__ListItem) + ((struct __ecereNameSpace__ecere__com__Instance *)(char *)this)->_class->templateArgs[6].__anon1.__anon1.dataTypeClass->structSize));
-memcpy((void *)&link->data, (void *)(uintptr_t)value, ((struct __ecereNameSpace__ecere__com__Instance *)(char *)this)->_class->templateArgs[6].__anon1.__anon1.dataTypeClass->structSize);
+unsigned int a = sizeof(struct __ecereNameSpace__ecere__com__ListItem);
+unsigned int b = ((struct __ecereNameSpace__ecere__com__Instance *)(char *)this)->_class->templateArgs[6].__anon1.__anon1.dataTypeClass->structSize;
+unsigned int c = a + b;
+
+link = (struct __ecereNameSpace__ecere__com__Link *)__ecereNameSpace__ecere__com__eSystem_New0(sizeof(unsigned char) * (c));
+memcpy((void *)&link->data, (void *)(uintptr_t)value, b);
 }
 else
-link = __extension__ ({
-struct __ecereNameSpace__ecere__com__Link * __ecereInstance1 = __ecereNameSpace__ecere__com__eSystem_New0(sizeof(struct __ecereNameSpace__ecere__com__Link) + sizeof(struct __ecereNameSpace__ecere__com__ListItem));
-
-__ecereInstance1->data = ((uint64)(value)), __ecereInstance1;
-});
+{
+link = (struct __ecereNameSpace__ecere__com__Link *)__ecereNameSpace__ecere__com__eSystem_New0(sizeof(unsigned char) * (sizeof(struct __ecereNameSpace__ecere__com__ListItem) + sizeof(uint64)));
+link->data = ((uint64)(value));
+}
 (__extension__ ({
 struct __ecereNameSpace__ecere__com__IteratorPointer * (*  __internal_VirtualMethod)(struct __ecereNameSpace__ecere__com__Instance *, struct __ecereNameSpace__ecere__com__IteratorPointer * after, uint64 value);
 

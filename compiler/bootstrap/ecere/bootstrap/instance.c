@@ -1257,6 +1257,8 @@ return 0;
 
 void __ecereMethod___ecereNameSpace__ecere__com__BlockPool_Remove(struct __ecereNameSpace__ecere__com__BlockPool * this, struct __ecereNameSpace__ecere__com__MemBlock * block)
 {
+struct __ecereNameSpace__ecere__com__MemPart * part = block->part;
+
 if(block->prev)
 block->prev->next = block->next;
 if(block->next)
@@ -1267,13 +1269,12 @@ if(this->last == block)
 this->last = block->prev;
 block->next = this->free;
 this->free = block;
-block->part->blocksUsed--;
+part->blocksUsed--;
 this->numBlocks--;
-(*block->part->pool).usedSpace -= block->size;
-if(!block->part->blocksUsed && this->numBlocks && this->totalSize > this->numBlocks + this->numBlocks / 2)
+(*part->pool).usedSpace -= block->size;
+if(!part->blocksUsed && this->numBlocks && this->totalSize > this->numBlocks + this->numBlocks / 2)
 {
 struct __ecereNameSpace__ecere__com__MemBlock * next = this->free, * prev = (((void *)0));
-struct __ecereNameSpace__ecere__com__MemPart * part = block->part;
 
 this->free = (((void *)0));
 this->totalSize -= part->size;
@@ -1354,7 +1355,9 @@ struct __ecereNameSpace__ecere__com__MemPart * part = block->part;
 struct __ecereNameSpace__ecere__com__BlockPool * pool = part ? part->pool : (((void *)0));
 
 if(pool)
+{
 __ecereMethod___ecereNameSpace__ecere__com__BlockPool_Remove((&*pool), block);
+}
 else
 {
 __ecereNameSpace__ecere__com__TOTAL_MEM -= sizeof(struct __ecereNameSpace__ecere__com__MemBlock) + block->size;
@@ -5357,7 +5360,7 @@ __ecereMethod___ecereNameSpace__ecere__sys__BinaryTree_Delete(&(*_class->nameSpa
 {
 struct __ecereNameSpace__ecere__com__NameSpace * ns = _class->nameSpace;
 
-while((*ns).parent && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).classes) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).functions) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).defines) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).nameSpaces))
+while(ns != nameSpace && (*ns).parent && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).classes) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).functions) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).defines) && !__ecereProp___ecereNameSpace__ecere__sys__BinaryTree_Get_first(&(*ns).nameSpaces))
 {
 struct __ecereNameSpace__ecere__com__NameSpace * parent = (*ns).parent;
 
@@ -5550,7 +5553,7 @@ else
 _class->offset = 0;
 if(crossBits)
 {
-if(!strcmp(name, "GNOSISSystem") || !strcmp(name, "LineStyle") || !strcmp(name, "FillStyle") || !strcmp(name, "FontObject") || !strcmp(name, "SymbolStyle"))
+if(!strcmp(name, "GNOSISSystem") || !strcmp(name, "LineStyle") || !strcmp(name, "FillStyle") || !strcmp(name, "FontObject") || !strcmp(name, "FontObject") || !strcmp(name, "ecere::sys::Thread"))
 {
 _class->offset = force32Bits ? 24 : 12;
 }

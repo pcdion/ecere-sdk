@@ -984,9 +984,9 @@ extern struct __ecereNameSpace__ecere__com__Property * __ecereNameSpace__ecere__
 
 extern struct __ecereNameSpace__ecere__com__Instance * privateModule;
 
-extern struct __ecereNameSpace__ecere__com__Method * __ecereNameSpace__ecere__com__eClass_FindMethod(struct __ecereNameSpace__ecere__com__Class * _class, const char *  name, struct __ecereNameSpace__ecere__com__Instance * module);
-
 extern struct __ecereNameSpace__ecere__com__Class * __ecereNameSpace__ecere__com__eSystem_FindClass(struct __ecereNameSpace__ecere__com__Instance * module, const char *  name);
+
+extern struct __ecereNameSpace__ecere__com__Method * __ecereNameSpace__ecere__com__eClass_FindMethod(struct __ecereNameSpace__ecere__com__Class * _class, const char *  name, struct __ecereNameSpace__ecere__com__Instance * module);
 
 extern struct __ecereNameSpace__ecere__com__GlobalFunction * __ecereNameSpace__ecere__com__eSystem_RegisterFunction(const char *  name, const char *  type, void *  func, struct __ecereNameSpace__ecere__com__Instance * module, int declMode);
 
@@ -1996,8 +1996,9 @@ memberExp = (*memberExp->__anon1.list).last;
 if(memberExp && memberExp->type == 6 && memberExp->__anon1.index.exp && memberExp->__anon1.index.exp->expType && memberExp->__anon1.index.exp->expType->kind == 8 && memberExp->__anon1.index.exp->expType->__anon1._class && memberExp->__anon1.index.exp->expType->__anon1._class->__anon1.registered && memberExp->__anon1.index.exp->expType->__anon1._class->__anon1.registered != containerClass && __ecereNameSpace__ecere__com__eClass_IsDerived(memberExp->__anon1.index.exp->expType->__anon1._class->__anon1.registered, containerClass))
 {
 struct __ecereNameSpace__ecere__com__Class * c = memberExp->__anon1.index.exp->expType->__anon1._class->__anon1.registered;
+struct __ecereNameSpace__ecere__com__Class * arrayClass = __ecereNameSpace__ecere__com__eSystem_FindClass(privateModule, "Array");
 
-if(strcmp((c->templateClass ? c->templateClass : c)->name, "Array"))
+if(!__ecereNameSpace__ecere__com__eClass_IsDerived(c->templateClass ? c->templateClass : c, arrayClass))
 {
 if(exp->__anon1.op.exp2 && exp->__anon1.op.op == '=')
 {

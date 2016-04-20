@@ -1630,7 +1630,7 @@ struct __ecereNameSpace__ecere__com__ClassTemplateArgument * arg = FindTemplateA
 
 type->byReference = method->dataType->byReference;
 methodDataType = ProcessTypeString(method->dataTypeString, 0);
-type->__anon1.__anon2.thisClass = methodDataType->__anon1.__anon2.thisClass = arg ? FindClass((*arg).__anon1.__anon1.dataTypeString) : (((void *)0));
+type->__anon1.__anon2.thisClass = methodDataType->__anon1.__anon2.thisClass = (arg && (*arg).__anon1.__anon1.dataTypeString) ? FindClass((*arg).__anon1.__anon1.dataTypeString) : (((void *)0));
 }
 }
 else if(method->dataType->__anon1.__anon2.staticMethod)

@@ -2469,7 +2469,7 @@ __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_case", 308);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_default", 309);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_if", 310);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_switch", 311);
-__ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_whilte", 312);
+__ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_while", 312);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_do", 313);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_for", 314);
 __ecereNameSpace__ecere__com__eEnum_AddFixedValue(class, "_goto", 315);
