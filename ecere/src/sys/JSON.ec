@@ -118,6 +118,7 @@ private:
             else if(type && eClass_IsDerived(type, class(ColorAlpha)))
             {
                result = GetColorAlpha(string, value);
+               delete string;
             }
             else if(type && (type.type == structClass))
             {
