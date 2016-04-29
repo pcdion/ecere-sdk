@@ -967,23 +967,17 @@ ch -= ('a' - 10);
 else if(ch >= 'A' && ch <= 'Z')
 ch -= ('A' - 10);
 else
-{
-if(endString)
-*endString = string + c;
 break;
-}
 if(ch < base)
 {
 value *= base;
 value += ch;
 }
 else
-{
-if(endString)
-*endString = string + c;
 break;
 }
-}
+if(endString)
+*endString = string + c;
 return sign * value;
 }
 
@@ -1028,23 +1022,17 @@ ch -= ('a' - 10);
 else if(ch >= 'A' && ch <= 'Z')
 ch -= ('A' - 10);
 else
-{
-if(endString)
-*endString = string + c;
 break;
-}
 if(ch < base)
 {
 value *= base;
 value += ch;
 }
 else
-{
-if(endString)
-*endString = string + c;
 break;
 }
-}
+if(endString)
+*endString = string + c;
 return sign * value;
 }
 
@@ -1355,9 +1343,7 @@ struct __ecereNameSpace__ecere__com__MemPart * part = block->part;
 struct __ecereNameSpace__ecere__com__BlockPool * pool = part ? part->pool : (((void *)0));
 
 if(pool)
-{
 __ecereMethod___ecereNameSpace__ecere__com__BlockPool_Remove((&*pool), block);
-}
 else
 {
 __ecereNameSpace__ecere__com__TOTAL_MEM -= sizeof(struct __ecereNameSpace__ecere__com__MemBlock) + block->size;
@@ -5436,7 +5422,7 @@ else
 _class->offset = 0;
 if(crossBits)
 {
-if(!strcmp(name, "GNOSISSystem") || !strcmp(name, "LineStyle") || !strcmp(name, "FillStyle") || !strcmp(name, "FontObject") || !strcmp(name, "FontObject") || !strcmp(name, "ecere::sys::Thread"))
+if(!strcmp(name, "GNOSISSystem") || !strcmp(name, "LineStyle") || !strcmp(name, "FillStyle") || !strcmp(name, "FontObject") || !strcmp(name, "SymbolStyle"))
 {
 _class->offset = force32Bits ? 24 : 12;
 }

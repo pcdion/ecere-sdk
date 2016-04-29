@@ -58,8 +58,6 @@ unsigned int count;
 unsigned int minAllocSize;
 } ecere_gcc_struct;
 
-extern struct __ecereNameSpace__ecere__com__Property * __ecereProp___ecereNameSpace__ecere__com__Class_char__PTR_;
-
 struct __ecereNameSpace__ecere__sys__BTNode;
 
 struct __ecereNameSpace__ecere__sys__OldList
@@ -384,10 +382,6 @@ struct __ecereNameSpace__ecere__com__NameSpace systemNameSpace;
 
 static struct __ecereNameSpace__ecere__com__Class * __ecereClass___ecereNameSpace__ecere__com__Array;
 
-const char *  __ecereProp___ecereNameSpace__ecere__com__Class_Get_char__PTR_(struct __ecereNameSpace__ecere__com__Class * this);
-
-struct __ecereNameSpace__ecere__com__Class * __ecereProp___ecereNameSpace__ecere__com__Class_Set_char__PTR_(const char *  value);
-
 extern struct __ecereNameSpace__ecere__com__Class * __ecereClass_uint;
 
 extern struct __ecereNameSpace__ecere__com__Class * __ecereClass___ecereNameSpace__ecere__com__Instance;
@@ -461,7 +455,7 @@ return __ecerePointer___ecereNameSpace__ecere__com__Array->minAllocSize;
 void __ecereMethod___ecereNameSpace__ecere__com__Array_OnUnserialize(struct __ecereNameSpace__ecere__com__Class * class, struct __ecereNameSpace__ecere__com__Instance ** this, struct __ecereNameSpace__ecere__com__Instance * channel)
 {
 __attribute__((unused)) struct __ecereNameSpace__ecere__com__Array * __ecerePointer___ecereNameSpace__ecere__com__Array = (struct __ecereNameSpace__ecere__com__Array *)(this ? (((char *)this) + 0 + sizeof(struct __ecereNameSpace__ecere__com__Instance)) : 0);
-struct __ecereNameSpace__ecere__com__Instance * array = __ecereNameSpace__ecere__com__eInstance_New(__ecereProp___ecereNameSpace__ecere__com__Class_Set_char__PTR_(class->fullName));
+struct __ecereNameSpace__ecere__com__Instance * array = __ecereNameSpace__ecere__com__eInstance_New(class);
 unsigned int count, c;
 struct __ecereNameSpace__ecere__com__Class * Dclass = class->templateArgs[2].__anon1.__anon1.dataTypeClass;
 

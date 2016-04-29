@@ -686,7 +686,6 @@ unsigned int casted : 1;
 unsigned int pointerAlignment : 1;
 unsigned int isLong : 1;
 unsigned int signedBeforePromotion : 1;
-unsigned int isVector : 1;
 } ecere_gcc_struct;
 
 extern void DeclareMethod(struct External * neededFor, struct __ecereNameSpace__ecere__com__Method * method, const char *  name);
@@ -1444,7 +1443,7 @@ else
 __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, " = 0");
 __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, ";\n\n");
 }
-__ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      safeIncRef();\n");
+__ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      incref this;\n");
 for(param = method->dataType->__anon1.__anon2.params.first; param; param = param->next)
 {
 char type[1024] = "";
@@ -1498,7 +1497,7 @@ __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "         __ecereBuff
 }
 __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      }\n");
 __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      __ecereBuffer.Free();\n");
-__ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      safeDecRef();\n");
+__ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      delete this;\n");
 if(method->dataType->__anon1.__anon2.returnType->kind != 0)
 {
 __ecereMethod___ecereNameSpace__ecere__sys__File_Printf(f, "      return __ecereResult;\n");

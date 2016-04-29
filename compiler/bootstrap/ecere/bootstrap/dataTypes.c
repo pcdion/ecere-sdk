@@ -2657,7 +2657,7 @@ if(!atMember || !strcmp(memberType->name, "bool"))
 strcat(tempString, name);
 strcat(tempString, " = ");
 }
-if(!strcmp(memberType->name, "char *"))
+if(needClass && *needClass && !strcmp(memberType->name, "char *"))
 {
 int len = strlen(tempString);
 int c;
