@@ -11,6 +11,18 @@
    ],
    functions = [
       {
+         "CopyString",
+         {
+            description = "fetches copy of source string"
+         }
+      },
+      {
+         "GetLastDirectory",
+         {
+            description = "fetches last directory from file path"
+         }
+      },
+      {
          "GetRandom",
          {
             description = "Returns a random integer from lo to hi inclusive.",
@@ -29,8 +41,21 @@
             example = "      int Rand;<br>"
                "      RandomSeed((uint)(GetTime() * 1000));<br>"
                "      Rand = GetRandom(1, 10);<br>"
-               "      printf(\"%d\<br>\", Rand);     ",
+               "      printf(\"%d<br>"
+               "\", Rand);     ",
             also = "RandomSeed()"
+         }
+      },
+      {
+         "PathCat",
+         {
+            description = "concatenate addedPath string to source path string"
+         }
+      },
+      {
+         "PathCatSlash",
+         {
+            description = "concatenate addedPath string preceded with a forward slash to source path string"
          }
       },
       {

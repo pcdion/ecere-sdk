@@ -300,7 +300,9 @@
       {
          "strcmp",
          {
-            description = "Case sensitive comparison of strings"
+            description = "Case sensitive comparison of strings",
+            usage = "Returns an integer -1, 0, or 1 if s1 is found to be less than, to match, or be greater than s2. ",
+            example = "myBoolean = strcmp(a,b);"
          }
       },
       {
