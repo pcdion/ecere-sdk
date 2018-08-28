@@ -215,6 +215,8 @@ public:
          case text:    bind_text  (pos, value.s); break;
       }
    }
+   void bind_blob(int pos, uintsize size, void * data) { sqlite3_bind_text(stmt, pos,(char *)data, size, SQLITE_TRANSIENT); }
+   //(char *)buffer._buffer
 
    FieldType column_type(int pos) { return (FieldType)sqlite3_column_type(stmt, pos); }
    int column_int(int pos) { return sqlite3_column_int(stmt, pos); }
