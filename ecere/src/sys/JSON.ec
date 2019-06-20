@@ -1737,7 +1737,8 @@ static bool WriteMap(File f, Class type, Map map, int indent, bool eCON, bool ca
          else
             isFirst = false;
          if(spacing) for(i = 0; i<indent; i++) f.Puts("   ");
-         WriteONObject(f, mapNodeClass, n, indent, eCON, eCON ? true : false, capitalize, map);
+         //will this need to account for mbgl?
+         WriteONObject(f, mapNodeClass, n, indent, eCON, eCON ? true : false, false, capitalize, map);
       }
       if(spacing)
       {
@@ -2013,7 +2014,7 @@ static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCO
    else if(type.type == normalClass || type.type == noHeadClass || type.type == structClass)
    {
       bool omitNames = type.type == structClass && type.members.count < 5 && !strstr(type.name, "GeometryData") && (type.members.count == type.membersAndProperties.count || !strcmp(type.name, "GeoExtent") || !strcmp(type.name, "GeoPoint") || !strcmp(type.name, "UMSRowsSpecs"));
-      WriteONObject(f, type, value.p, indent, eCON, eCON && omitNames, capitalize, null);
+      WriteONObject(f, type, value.p, indent, eCON, false, eCON && omitNames, capitalize, null);
    }
    else if(eClass_IsDerived(type, class(ColorAlpha)))
       WriteColorAlpha(f, type, value, indent, eCON);
@@ -2034,7 +2035,7 @@ public bool WriteJSONObject(File f, Class objectType, void * object, int indent)
    bool result = false;
    if(object)
    {
-      result = WriteONObject(f, objectType, object, indent, false, false, true, null);
+      result = WriteONObject(f, objectType, object, indent, false, false, false, true, null);
       f.Puts("\n");
    }
    return result;
@@ -2045,7 +2046,7 @@ public bool WriteJSONObject2(File f, Class objectType, void * object, int indent
    bool result = false;
    if(object)
    {
-      result = WriteONObject(f, objectType, object, indent, false, false, capitalize, null);
+      result = WriteONObject(f, objectType, object, indent, false, false, false, capitalize, null);
       f.Puts("\n");
    }
    return result;
@@ -2056,7 +2057,18 @@ public bool WriteECONObject(File f, Class objectType, void * object, int indent)
    bool result = false;
    if(object)
    {
-      result = WriteONObject(f, objectType, object, indent, true, false, true, null);
+      result = WriteONObject(f, objectType, object, indent, true, false, false, true, null);
+      f.Puts("\n");
+   }
+   return result;
+}
+
+public bool WriteMBGLObject(File f, Class objectType, void * object, int indent, int why)
+{
+   bool result = false;
+   if(object)
+   {
+      result = WriteONObject(f, objectType, object, indent, false, true, false, true, null);
       f.Puts("\n");
    }
    return result;
@@ -2068,7 +2080,7 @@ public String PrintECONObject(Class objectType, void * object, int indent)
    if(object)
    {
       TempFile f { };
-      if(WriteONObject(f, objectType, object, indent, true, false, true, null))
+      if(WriteONObject(f, objectType, object, indent, true, false, false, true, null))
       {
          f.Putc(0);
          result = (String)f.StealBuffer();
@@ -2079,7 +2091,7 @@ public String PrintECONObject(Class objectType, void * object, int indent)
 }
 
 
-static bool WriteONObject(File f, Class objectType, void * object, int indent, bool eCON, bool omitDefaultIdentifier, bool capitalize, Container forMap)
+static bool WriteONObject(File f, Class objectType, void * object, int indent, bool eCON, bool mapboxGL, bool omitDefaultIdentifier, bool capitalize, Container forMap)
 {
    const String tName = objectType.templateClass ? objectType.templateClass.name : objectType.name;
    bool spacing = compactTypes.Find(tName) == null;
@@ -2363,8 +2375,20 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                      if(!eCON)
                      {
                         f.Puts("\"");
-                        f.Putc(capitalize ? (char)toupper(member.name[0]) : member.name[0]);
-                        f.Puts(member.name+1);
+                        // mbgl hack for maintaining dashed identifiers in output lost from parsing
+                        if(mapboxGL)
+                        {
+                           const String dashString = dashMapMBGL[member.name];
+                           if(dashString && strlen(dashString) > 0)
+                              f.Puts(dashString);
+                           else
+                              f.Puts(member.name);
+                        }
+                        else
+                        {
+                           f.Putc(capitalize ? (char)toupper(member.name[0]) : member.name[0]);
+                           f.Puts(member.name+1);
+                        }
                         f.Puts("\" : ");
                      }
                      else if(!omitDefaultIdentifier || cantOmit)
@@ -2430,3 +2454,26 @@ static void removeDashes(String string)
       }
    }
 }
+// apparently strange capitalizations in real output
+static Map<const String, const String> dashMapMBGL
+{ [
+   { "sourcelayer", "source-layer" },
+   { "fillcolor", "fill-color" },
+   { "fillopacity", "fill-opacity" },
+   { "linecolor", "line-color" },
+   { "lineopacity",  "line-opacity" },
+   { "linewidth",  "line-width" },
+   { "iconopacity",  "icon-opacity" },
+   { "iconimage",  "icon-image" },
+   { "iconsize", "icon-size" },
+   { "maxzoom",  "maxzoom" },
+   { "minzoom",  "minzoom" },
+   { "textfield",  "text-field" },
+   { "textsize",  "text-size" },
+   { "textoffset",  "text-offset" },
+   { "textfont",  "text-font" },
+   { "texthalocolor",  "text-halo-color" },
+   { "texthalowidth",  "text-halo-width" },
+   { "texthaloblur",  "text-halo-blur" },
+   { "textcolor",  "text-color" }
+] };
