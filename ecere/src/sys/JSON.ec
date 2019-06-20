@@ -2063,7 +2063,7 @@ public bool WriteECONObject(File f, Class objectType, void * object, int indent)
    return result;
 }
 
-public bool WriteMBGLObject(File f, Class objectType, void * object, int indent, int why)
+public bool WriteMBGLObject(File f, Class objectType, void * object, int indent)
 {
    bool result = false;
    if(object)
