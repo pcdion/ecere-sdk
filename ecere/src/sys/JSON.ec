@@ -1703,7 +1703,7 @@ private:
    }
 }
 
-static bool WriteMap(File f, Class type, Map map, int indent, bool eCON, bool capitalize)
+static bool WriteMap(File f, Class type, Map map, int indent, bool eCON, bool mapboxGL, bool capitalize)
 {
    if(map)
    {
@@ -1758,7 +1758,7 @@ static bool WriteMap(File f, Class type, Map map, int indent, bool eCON, bool ca
    return true;
 }
 
-static bool WriteArray(File f, Class type, Container array, int indent, bool eCON, bool capitalize)
+static bool WriteArray(File f, Class type, Container array, int indent, bool eCON, bool mapboxGL, bool capitalize)
 {
    if(array)
    {
@@ -1822,7 +1822,7 @@ static bool WriteArray(File f, Class type, Container array, int indent, bool eCO
             value.p = (void *)(uintptr)t;
          }
          if(spacing) for(i = 0; i<indent; i++) f.Puts("   ");
-         WriteValue(f, arrayType, value, indent, eCON, false, capitalize);
+         WriteValue(f, arrayType, value, indent, eCON, mapboxGL, false, capitalize);
       }
       if(spacing)
       {
@@ -1839,7 +1839,7 @@ static bool WriteArray(File f, Class type, Container array, int indent, bool eCO
    return true;
 }
 
-static bool WriteNumber(File f, Class type, DataValue value, int indent, bool eCON, bool useHex, bool jsonBitClass, bool forceQuotes)
+static bool WriteNumber(File f, Class type, DataValue value, int indent, bool eCON, bool mapboxGL, bool useHex, bool jsonBitClass, bool forceQuotes)
 {
    char buffer[1024];
    ObjectNotationType onType = eCON ? econ : json;
@@ -1997,7 +1997,7 @@ public bool WriteONString(File f, String s, bool eCON, int indent)
    return true;
 }
 
-static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON, bool forceQuotes, bool capitalize)
+static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCON, bool mapboxGL, bool forceQuotes, bool capitalize)
 {
    if(!strcmp(type.name, "String") || !strcmp(type.dataTypeString, "char *"))
       WriteONString(f, value.p, eCON, indent);
@@ -2006,27 +2006,27 @@ static bool WriteValue(File f, Class type, DataValue value, int indent, bool eCO
    else if(!strcmp(type.name, "SetBool"))
       f.Puts(value.i == SetBool::true ? "true" : value.i == SetBool::false ? "false" : "unset");
    else if(type.type == enumClass)
-      WriteNumber(f, type, value, indent, eCON, false, false, forceQuotes);
+      WriteNumber(f, type, value, indent, eCON, mapboxGL, false, false, forceQuotes);
    else if(eClass_IsDerived(type, class(Map)))
-      WriteMap(f, type, value.p, indent, eCON, capitalize);
+      WriteMap(f, type, value.p, indent, eCON, mapboxGL, capitalize);
    else if(eClass_IsDerived(type, class(Container)))
-      WriteArray(f, type, value.p, indent, eCON, capitalize);
+      WriteArray(f, type, value.p, indent, eCON, mapboxGL, capitalize);
    else if(type.type == normalClass || type.type == noHeadClass || type.type == structClass)
    {
       bool omitNames = type.type == structClass && type.members.count < 5 && !strstr(type.name, "GeometryData") && (type.members.count == type.membersAndProperties.count || !strcmp(type.name, "GeoExtent") || !strcmp(type.name, "GeoPoint") || !strcmp(type.name, "UMSRowsSpecs"));
-      WriteONObject(f, type, value.p, indent, eCON, false, eCON && omitNames, capitalize, null);
+      WriteONObject(f, type, value.p, indent, eCON, mapboxGL, eCON && omitNames, capitalize, null);
    }
    else if(eClass_IsDerived(type, class(ColorAlpha)))
       WriteColorAlpha(f, type, value, indent, eCON);
    else if(type.type == bitClass)
    {
       if(eCON || !strcmp(type.name, "MapDataType"))
-         WriteNumber(f, type, value, indent, eCON, false, true, forceQuotes);
+         WriteNumber(f, type, value, indent, eCON, mapboxGL, false, true, forceQuotes);
       else
-         WriteNumber(f, superFindClass(type.dataTypeString, type.module), value, indent, false, true, false, forceQuotes);
+         WriteNumber(f, superFindClass(type.dataTypeString, type.module), value, indent, false, false, true, false, forceQuotes);
    }
    else if(type.type == systemClass || type.type == unitClass)
-      WriteNumber(f, type, value, indent, eCON, false, false, forceQuotes);
+      WriteNumber(f, type, value, indent, eCON, mapboxGL, false, false, forceQuotes);
    return true;
 }
 
@@ -2277,7 +2277,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                         }
                         else if(isMapNodeValue)
                            f.Puts(" : ");
-                        WriteValue(f, type, value, indent, eCON, jsonDicMap && isMapNodeKey, capitalize);
+                        WriteValue(f, type, value, indent, eCON, mapboxGL, jsonDicMap && isMapNodeKey, capitalize);
                         if(!jsonDicMap)
                            isFirst = false;
                         if(type.type == structClass)
@@ -2396,7 +2396,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                         f.Puts(member.name);
                         f.Puts(" = ");
                      }
-                     WriteValue(f, type, value, indent, eCON, false, capitalize);
+                     WriteValue(f, type, value, indent, eCON, mapboxGL, false, capitalize);
                      isFirst = false;
                   }
                }
