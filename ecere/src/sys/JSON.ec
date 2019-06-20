@@ -2261,8 +2261,19 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                            if(!eCON)
                            {
                               f.Puts("\"");
-                              f.Putc(capitalize ? (char)toupper(prop.name[0]) : prop.name[0]);
-                              f.Puts(prop.name+1);
+                              if(mapboxGL)
+                              {
+                                 const String dashString = dashMapMBGL[prop.name];
+                                 if(dashString && strlen(dashString) > 0)
+                                    f.Puts(dashString);
+                                 else
+                                    f.Puts(prop.name);
+                              }
+                              else
+                              {
+                                 f.Putc(capitalize ? (char)toupper(prop.name[0]) : prop.name[0]);
+                                 f.Puts(prop.name+1);
+                              }
                               f.Puts("\" : ");
                            }
                            else if(!omitDefaultIdentifier || cantOmit)
