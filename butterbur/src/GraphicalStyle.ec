@@ -28,23 +28,25 @@ public:
    bool strokeCap          :1:15;
    bool strokeDashPattern  :1:16;
    bool text               :1:17;
-   bool font               :1:18;
-   bool face               :1:19;
-   bool size               :1:20;
-   bool width              :1:21;
-   bool bold               :1:22;
-   bool italic             :1:23;
-   bool outline            :1:24;
-   bool casing             :1:25;
-   bool color              :1:26;
-   bool image              :1:27;
-   bool alignmentHorzAlign :1:28;
-   bool alignmentVertAlign :1:29;
-   bool zOrder             :1:30;
-   bool visibility         :1:31;
-   bool transform          :1:32;
-   bool opacity            :1:33;
-   bool transform3D        :1:34;
+   bool fontFace           :1:18;
+   bool fontSize           :1:19;
+   bool fontBold           :1:20;
+   bool fontItalic         :1:21;
+   bool fontColor          :1:22;
+   bool fontOutlineWidth   :1:23;
+   bool fontOutlineColor   :1:24;
+   bool fontOutlineOpacity :1:25;
+   bool fontOpacity        :1:26;
+   bool casing             :1:27;
+   bool color              :1:28;
+   bool image              :1:29;
+   bool alignmentHorzAlign :1:30;
+   bool alignmentVertAlign :1:31;
+   bool zOrder             :1:32;
+   bool visibility         :1:33;
+   bool transform          :1:34;
+   bool opacity            :1:35;
+   bool transform3D        :1:36;
 };
 
 public enum GraphicalStyleKind : GraphicalStyleMask
@@ -71,14 +73,19 @@ public enum GraphicalStyleKind : GraphicalStyleMask
    strokeCap = GraphicalStyleMask { strokeCap = true },
    strokeDashPattern = GraphicalStyleMask { strokeDashPattern = true },
    text = GraphicalStyleMask { text = true },
-   font = GraphicalStyleMask { font = true },
-   face = GraphicalStyleMask { face = true },
-   size = GraphicalStyleMask { size = true },
-   width = GraphicalStyleMask { width = true },
-   bold = GraphicalStyleMask { bold = true },
-   italic = GraphicalStyleMask { italic = true },
-   outline = GraphicalStyleMask { outline = true },
-   color = GraphicalStyleMask { color = true },
+   font = GraphicalStyleMask { fontFace = true, fontSize = true, fontBold = true, fontItalic = true, fontColor = true, fontOpacity = true, fontOutlineWidth = true, fontOutlineColor = true, fontOutlineOpacity = true  },
+   fontFace = GraphicalStyleMask { fontFace = true },
+   fontSize = GraphicalStyleMask { fontSize = true },
+   fontBold = GraphicalStyleMask { fontBold = true },
+   fontItalic = GraphicalStyleMask { fontItalic = true },
+   fontColor = GraphicalStyleMask { fontColor = true },
+   fontOpacity = GraphicalStyleMask { fontOpacity = true },
+   fontOutline = GraphicalStyleMask { fontOutlineWidth = true, fontOutlineColor = true, fontOutlineOpacity = true },
+   fontOutlineWidth = GraphicalStyleMask { fontOutlineWidth = true },
+   fontOutlineColor = GraphicalStyleMask { fontOutlineColor = true },
+   fontOutlineOpacity = GraphicalStyleMask { fontOutlineOpacity = true },
+   //outline = GraphicalStyleMask { outline = true },
+   //color = GraphicalStyleMask { color = true },
    casing = GraphicalStyleMask { casing = true },
    image = GraphicalStyleMask { image = true },
    alignment = GraphicalStyleMask { alignmentHorzAlign = true, alignmentVertAlign = true },
@@ -114,13 +121,21 @@ Map<String, GraphicalStyleMask> styleIdentifierMap
    { "stroke.dashPattern", strokeDashPattern },
    { "text", text },
    { "font", font },
-   { "color", color },
-   { "width", width },
-   { "size", size },
-   { "casing", strokeCasing },
-   { "outline", outline },
-   { "bold", bold },
-   { "italic", italic },
+   { "font.face", fontFace },
+   { "font.size", fontSize },
+   { "font.bold", fontBold },
+   { "font.italic", fontItalic },
+   { "font.color", fontColor },
+   { "font.opacity", fontOpacity },
+   { "font.outline", fontOutline },
+   { "font.outline.width", fontOutlineWidth },
+   { "font.outline.color", fontOutlineColor },
+   { "font.outline.opacity", fontOutlineOpacity },
+   //{ "size", size },
+   //{ "casing", strokeCasing },
+   //{ "outline", outline },
+   //{ "bold", bold },
+   //{ "italic", italic },
    { "alignment", alignment },
    { "alignment.horzAlign", alignmentHorzAlign },
    { "alignment.vertAlign", alignmentVertAlign },
@@ -145,7 +160,7 @@ Map<GraphicalStyleMask, const String> stringFromMaskMap
    { strokeWidth, "stroke.width" },
    { strokeCasing, "stroke.casing" },
    { strokeCasingWidth, "stroke.casing.width" },
-   { strokeCasingColor, "stroke.ca/sing.color" },
+   { strokeCasingColor, "stroke.casing.color" },
    { strokeJoin, "stroke.join" },
    { strokeCap, "stroke.cap" },
    { strokeDashPattern, "stroke.dashPattern"  },
@@ -157,14 +172,19 @@ Map<GraphicalStyleMask, const String> stringFromMaskMap
    { transform3D, "transform3D" },
    { text, "text" },
    { font, "font" },
-   { face, "face" },
-   { size, "size" },
-   { width, "width" },
-   { bold, "bold" },
-   { italic, "italic" },
-   { outline, "outline" },
-   { color, "color" },
-   { casing, "casing" },
+   { fontFace, "font.face" },
+   { fontSize, "font.size" },
+   { fontBold, "font.bold" },
+   { fontItalic, "font.italic" },
+   { fontColor, "font.color" },
+   { fontOpacity, "font.opacity" },
+   { fontOutline, "font.outline" },
+   { fontOutlineWidth, "font.outline.width" },
+   { fontOutlineColor, "font.outline.color" },
+   { fontOutlineOpacity, "font.outline.opacity" },
+   //{ size, "size" },
+   //{ color, "color" },
+   //{ casing, "casing" },
    { image, "image" }
 ] };
 
