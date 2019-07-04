@@ -2261,7 +2261,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                            if(!eCON)
                            {
                               f.Puts("\"");
-                              if(mapboxGL)
+                              if(mapboxGL && prop.IsSet)
                               {
                                  const String dashString = dashMapMBGL[prop.name];
                                  if(dashString && strlen(dashString) > 0)
@@ -2407,6 +2407,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                         f.Puts(member.name);
                         f.Puts(" = ");
                      }
+                     //if(!mapboxGL || (!strcmp(prop.name, "filter") && prop.IsSet) || strcmp(prop.name, "filter"))
                      WriteValue(f, type, value, indent, eCON, mapboxGL, false, capitalize);
                      isFirst = false;
                   }
