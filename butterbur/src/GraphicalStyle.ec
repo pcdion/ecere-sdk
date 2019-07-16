@@ -97,7 +97,7 @@ public enum GraphicalStyleKind : GraphicalStyleMask
    fontOutlineOpacity = GraphicalStyleMask { fontOutlineOpacity = true },
    //outline = GraphicalStyleMask { outline = true },
    //color = GraphicalStyleMask { color = true },
-   casing = GraphicalStyleMask { casing = true },
+   //casing = GraphicalStyleMask { casing = true },
    image = GraphicalStyleMask { image = true },
    alignment = GraphicalStyleMask { alignmentHorzAlign = true, alignmentVertAlign = true },
    alignmentHorzAlign = GraphicalStyleMask { alignmentHorzAlign = true },
