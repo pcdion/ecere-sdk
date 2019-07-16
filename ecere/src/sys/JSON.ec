@@ -2063,18 +2063,7 @@ public bool WriteECONObject(File f, Class objectType, void * object, int indent)
    return result;
 }
 
-/*public bool WriteMBGLObject(File f, Class objectType, void * object, int indent)
-{
-   bool result = false;
-   if(object)
-   {
-      result = WriteONObject(f, objectType, object, indent, false, true, false, true, null);
-      f.Puts("\n");
-   }
-   return result;
-}*/
-
-public bool WriteJSONObjectMap(File f, Class objectType, void * object, int indent, Map<String, const String> stringMap)
+public bool WriteJSONObjectMapped(File f, Class objectType, void * object, int indent, Map<String, const String> stringMap)
 {
    bool result = false;
    if(object)
@@ -2275,9 +2264,9 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                               f.Puts("\"");
                               if(stringMap && prop.IsSet)
                               {
-                                 const String dashString = stringMap[prop.name];
-                                 if(dashString && strlen(dashString) > 0)
-                                    f.Puts(dashString);
+                                 const String string = stringMap[prop.name];
+                                 if(string && string[0])
+                                    f.Puts(string);
                                  else
                                     f.Puts(prop.name);
                               }
@@ -2398,12 +2387,12 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
                      if(!eCON)
                      {
                         f.Puts("\"");
-                        // mbgl hack for maintaining dashed identifiers in output lost from parsing
+                        // e.g. for maintaining dashed identifiers
                         if(stringMap)
                         {
-                           const String dashString = stringMap[member.name];
-                           if(dashString && strlen(dashString) > 0)
-                              f.Puts(dashString);
+                           const String string = stringMap[member.name];
+                           if(string && string[0])
+                              f.Puts(string);
                            else
                               f.Puts(member.name);
                         }
