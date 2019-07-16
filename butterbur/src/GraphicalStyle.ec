@@ -10,43 +10,50 @@ import "GraphicalElement"
 public class GraphicalStyleMask : StylesMask
 {
 public:
-   bool fillPattern        :1: 0;
-   bool fillColor          :1: 1;
-   bool fillOpacity        :1: 2;
-   bool fillStippleStyle   :1: 3;
-   bool fillHatchStyle     :1: 4;
-   bool fillGradient       :1: 5;
-   bool strokePattern      :1: 6;
-   bool strokeOpacity      :1: 7;
-   bool strokeWidth        :1: 8;
-   bool strokeColor        :1: 9;
-   bool strokeCenterWidth  :1:10;
-   bool strokeCenterColor  :1:11;
-   bool strokeCasingWidth  :1:12;
-   bool strokeCasingColor  :1:13;
-   bool strokeJoin         :1:14;
-   bool strokeCap          :1:15;
-   bool strokeDashPattern  :1:16;
-   bool text               :1:17;
-   bool fontFace           :1:18;
-   bool fontSize           :1:19;
-   bool fontBold           :1:20;
-   bool fontItalic         :1:21;
-   bool fontColor          :1:22;
-   bool fontOutlineWidth   :1:23;
-   bool fontOutlineColor   :1:24;
-   bool fontOutlineOpacity :1:25;
-   bool fontOpacity        :1:26;
-   bool casing             :1:27;
-   bool color              :1:28;
-   bool image              :1:29;
-   bool alignmentHorzAlign :1:30;
-   bool alignmentVertAlign :1:31;
-   bool zOrder             :1:32;
-   bool visibility         :1:33;
-   bool transform          :1:34;
-   bool opacity            :1:35;
-   bool transform3D        :1:36;
+   // Generic styles
+   bool visibility         :1: 0;
+   bool opacity            :1: 1;
+   bool transform          :1: 2;
+   bool transform3D        :1: 3;
+   bool zOrder             :1: 4;
+
+   // Shapes Styles
+   bool fillPattern        :1: 5;
+   bool fillColor          :1: 6;
+   bool fillOpacity        :1: 7;
+   bool fillStippleStyle   :1: 8;
+   bool fillHatchStyle     :1: 9;
+   bool fillGradient       :1:10;
+   bool strokePattern      :1:11;
+   bool strokeOpacity      :1:12;
+   bool strokeWidth        :1:13;
+   bool strokeColor        :1:14;
+   bool strokeCenterWidth  :1:15;
+   bool strokeCenterColor  :1:16;
+   bool strokeCenterOpacity:1:17;
+   bool strokeCasingWidth  :1:18;
+   bool strokeCasingColor  :1:19;
+   bool strokeCasingOpacity:1:20;
+   bool strokeJoin         :1:21;
+   bool strokeCap          :1:22;
+   bool strokeDashPattern  :1:23;
+
+   // Text Styles
+   bool text               :1:24;
+   bool fontFace           :1:25;
+   bool fontSize           :1:26;
+   bool fontBold           :1:27;
+   bool fontItalic         :1:28;
+   bool fontColor          :1:29;
+   bool fontOpacity        :1:30;
+   bool fontOutlineSize    :1:31;
+   bool fontOutlineColor   :1:32;
+   bool fontOutlineOpacity :1:33;
+   bool alignmentHorzAlign :1:34;
+   bool alignmentVertAlign :1:35;
+
+   // Image Styles
+   bool image              :1:36;
 };
 
 public enum GraphicalStyleKind : GraphicalStyleMask
@@ -73,15 +80,19 @@ public enum GraphicalStyleKind : GraphicalStyleMask
    strokeCap = GraphicalStyleMask { strokeCap = true },
    strokeDashPattern = GraphicalStyleMask { strokeDashPattern = true },
    text = GraphicalStyleMask { text = true },
-   font = GraphicalStyleMask { fontFace = true, fontSize = true, fontBold = true, fontItalic = true, fontColor = true, fontOpacity = true, fontOutlineWidth = true, fontOutlineColor = true, fontOutlineOpacity = true  },
+   font = GraphicalStyleMask
+   {
+      fontFace = true, fontSize = true, fontBold = true, fontItalic = true, fontColor = true, fontOpacity = true,
+      fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true
+   },
    fontFace = GraphicalStyleMask { fontFace = true },
    fontSize = GraphicalStyleMask { fontSize = true },
    fontBold = GraphicalStyleMask { fontBold = true },
    fontItalic = GraphicalStyleMask { fontItalic = true },
    fontColor = GraphicalStyleMask { fontColor = true },
    fontOpacity = GraphicalStyleMask { fontOpacity = true },
-   fontOutline = GraphicalStyleMask { fontOutlineWidth = true, fontOutlineColor = true, fontOutlineOpacity = true },
-   fontOutlineWidth = GraphicalStyleMask { fontOutlineWidth = true },
+   fontOutline = GraphicalStyleMask { fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true },
+   fontOutlineSize = GraphicalStyleMask { fontOutlineSize = true },
    fontOutlineColor = GraphicalStyleMask { fontOutlineColor = true },
    fontOutlineOpacity = GraphicalStyleMask { fontOutlineOpacity = true },
    //outline = GraphicalStyleMask { outline = true },
@@ -128,7 +139,7 @@ Map<String, GraphicalStyleMask> styleIdentifierMap
    { "font.color", fontColor },
    { "font.opacity", fontOpacity },
    { "font.outline", fontOutline },
-   { "font.outline.width", fontOutlineWidth },
+   { "font.outline.size", fontOutlineSize },
    { "font.outline.color", fontOutlineColor },
    { "font.outline.opacity", fontOutlineOpacity },
    //{ "size", size },
@@ -179,7 +190,7 @@ Map<GraphicalStyleMask, const String> stringFromMaskMap
    { fontColor, "font.color" },
    { fontOpacity, "font.opacity" },
    { fontOutline, "font.outline" },
-   { fontOutlineWidth, "font.outline.width" },
+   { fontOutlineSize, "font.outline.size" },
    { fontOutlineColor, "font.outline.color" },
    { fontOutlineOpacity, "font.outline.opacity" },
    //{ size, "size" },
