@@ -16,7 +16,11 @@ public:
    bool transform          :1: 2;
    bool transform3D        :1: 3;
    bool zOrder             :1: 4;
+};
 
+public class ShapesStyleMask : GraphicalStyleMask
+{
+public:
    // Shapes Styles
    bool fillPattern        :1: 5;
    bool fillColor          :1: 6;
@@ -37,7 +41,12 @@ public:
    bool strokeJoin         :1:21;
    bool strokeCap          :1:22;
    bool strokeDashPattern  :1:23;
+};
 
+
+public class TextStyleMask : GraphicalStyleMask
+{
+public:
    // Text Styles
    bool text               :1:24;
    bool fontFace           :1:25;
@@ -51,10 +60,15 @@ public:
    bool fontOutlineOpacity :1:33;
    bool alignmentHorzAlign :1:34;
    bool alignmentVertAlign :1:35;
+};
 
+public class ImageStyleMask : GraphicalStyleMask
+{
+public:
    // Image Styles
    bool image              :1:36;
 };
+
 
 public enum GraphicalStyleKind : GraphicalStyleMask
 {
