@@ -1051,6 +1051,7 @@ public:
             value.i = 0;
             setGenericBitMembers(this, (uint64 *)&value.i, evaluator, &flags);
          }
+         expType = c;
       }
       else if(computeType == runtime)
       {
@@ -1209,6 +1210,7 @@ public:
 
    CMSSTokenType assignType;
    Class destType;
+   Class expType; //test
    StylesMask stylesMask;
    DataMember dataMember;
    uint offset;
@@ -1348,6 +1350,7 @@ public:
             }
          }
       }
+      expType = c;//test
       return flags;
    }
 

@@ -18,7 +18,7 @@ public:
    bool zOrder             :1: 4;
 };
 
-public class ShapesStyleMask : GraphicalStyleMask
+public class ShapeStyleMask : GraphicalStyleMask
 {
 public:
    // Shapes Styles
@@ -48,83 +48,104 @@ public class TextStyleMask : GraphicalStyleMask
 {
 public:
    // Text Styles
-   bool text               :1:24;
-   bool fontFace           :1:25;
-   bool fontSize           :1:26;
-   bool fontBold           :1:27;
-   bool fontItalic         :1:28;
-   bool fontColor          :1:29;
-   bool fontOpacity        :1:30;
-   bool fontOutlineSize    :1:31;
-   bool fontOutlineColor   :1:32;
-   bool fontOutlineOpacity :1:33;
-   bool alignmentHorzAlign :1:34;
-   bool alignmentVertAlign :1:35;
+   bool text               :1:5;
+   bool fontFace           :1:6;
+   bool fontSize           :1:7;
+   bool fontBold           :1:8;
+   bool fontItalic         :1:9;
+   bool fontColor          :1:10;
+   bool fontOpacity        :1:11;
+   bool fontOutlineSize    :1:12;
+   bool fontOutlineColor   :1:13;
+   bool fontOutlineOpacity :1:14;
+   bool alignmentHorzAlign :1:15;
+   bool alignmentVertAlign :1:16;
 };
 
 public class ImageStyleMask : GraphicalStyleMask
 {
 public:
    // Image Styles
-   bool image              :1:36;
+   bool imagePath           :1:5;
+   bool tint               :1:6;
+   bool hotSpot            :1:7;
 };
-
 
 public enum GraphicalStyleKind : GraphicalStyleMask
 {
-   fill = GraphicalStyleMask { fillPattern = true, fillColor = true, fillOpacity = true, fillStippleStyle = true, fillHatchStyle = true, fillGradient = true },
-   fillPattern = GraphicalStyleMask { fillPattern = true },
-   fillColor = GraphicalStyleMask { fillColor = true },
-   fillOpacity = GraphicalStyleMask { fillOpacity = true },
-   fillStippleStyle = GraphicalStyleMask { fillStippleStyle = true },
-   fillHatchStyle = GraphicalStyleMask { fillHatchStyle = true },
-   fillGradient = GraphicalStyleMask { fillGradient = true },
-   stroke = GraphicalStyleMask { strokePattern = true, strokeOpacity = true, strokeWidth = true, strokeColor = true, strokeCenterWidth = true, strokeCenterColor = true, strokeCasingWidth = true, strokeCasingColor = true  },
-   strokePattern = GraphicalStyleMask { strokePattern = true },
-   strokeOpacity = GraphicalStyleMask { strokeOpacity = true },
-   strokeWidth = GraphicalStyleMask { strokeWidth = true },
-   strokeColor = GraphicalStyleMask { strokeColor = true },
-   strokeCenter = GraphicalStyleMask { strokeCenterWidth = true, strokeCenterColor = true },
-   strokeCenterWidth = GraphicalStyleMask { strokeCenterWidth = true },
-   strokeCenterColor = GraphicalStyleMask { strokeCenterColor = true },
-   strokeCasing = GraphicalStyleMask { strokeCasingWidth = true, strokeCasingColor = true },
-   strokeCasingWidth = GraphicalStyleMask { strokeCasingWidth = true },
-   strokeCasingColor = GraphicalStyleMask { strokeCasingColor = true },
-   strokeJoin = GraphicalStyleMask { strokeJoin = true },
-   strokeCap = GraphicalStyleMask { strokeCap = true },
-   strokeDashPattern = GraphicalStyleMask { strokeDashPattern = true },
-   text = GraphicalStyleMask { text = true },
-   font = GraphicalStyleMask
-   {
-      fontFace = true, fontSize = true, fontBold = true, fontItalic = true, fontColor = true, fontOpacity = true,
-      fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true
-   },
-   fontFace = GraphicalStyleMask { fontFace = true },
-   fontSize = GraphicalStyleMask { fontSize = true },
-   fontBold = GraphicalStyleMask { fontBold = true },
-   fontItalic = GraphicalStyleMask { fontItalic = true },
-   fontColor = GraphicalStyleMask { fontColor = true },
-   fontOpacity = GraphicalStyleMask { fontOpacity = true },
-   fontOutline = GraphicalStyleMask { fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true },
-   fontOutlineSize = GraphicalStyleMask { fontOutlineSize = true },
-   fontOutlineColor = GraphicalStyleMask { fontOutlineColor = true },
-   fontOutlineOpacity = GraphicalStyleMask { fontOutlineOpacity = true },
-   //outline = GraphicalStyleMask { outline = true },
-   //color = GraphicalStyleMask { color = true },
-   //casing = GraphicalStyleMask { casing = true },
-   image = GraphicalStyleMask { image = true },
-   alignment = GraphicalStyleMask { alignmentHorzAlign = true, alignmentVertAlign = true },
-   alignmentHorzAlign = GraphicalStyleMask { alignmentHorzAlign = true },
-   alignmentVertAlign = GraphicalStyleMask { alignmentVertAlign = true },
    zOrder = GraphicalStyleMask { zOrder = true },
    visibility = GraphicalStyleMask { visibility = true },
    transform = GraphicalStyleMask { transform = true },
    opacity = GraphicalStyleMask { opacity = true },
-   transform3D = GraphicalStyleMask { transform3D = true },
+   transform3D = GraphicalStyleMask { transform3D = true }
+};
+
+public enum ShapeStyleKind : GraphicalStyleKind
+{
+   fill = ShapeStyleMask { fillPattern = true, fillColor = true, fillOpacity = true, fillStippleStyle = true, fillHatchStyle = true, fillGradient = true },
+   fillPattern = ShapeStyleMask { fillPattern = true },
+   fillColor = ShapeStyleMask { fillColor = true },
+   fillOpacity = ShapeStyleMask { fillOpacity = true },
+   fillStippleStyle = ShapeStyleMask { fillStippleStyle = true },
+   fillHatchStyle = ShapeStyleMask { fillHatchStyle = true },
+   fillGradient = ShapeStyleMask { fillGradient = true },
+   stroke = ShapeStyleMask { strokePattern = true, strokeOpacity = true, strokeWidth = true, strokeColor = true, strokeCenterWidth = true, strokeCenterColor = true, strokeCasingWidth = true, strokeCasingColor = true  },
+   strokePattern = ShapeStyleMask { strokePattern = true },
+   strokeOpacity = ShapeStyleMask { strokeOpacity = true },
+   strokeWidth = ShapeStyleMask { strokeWidth = true },
+   strokeColor = ShapeStyleMask { strokeColor = true },
+   strokeCenter = ShapeStyleMask { strokeCenterWidth = true, strokeCenterColor = true },
+   strokeCenterWidth = ShapeStyleMask { strokeCenterWidth = true },
+   strokeCenterColor = ShapeStyleMask { strokeCenterColor = true },
+   strokeCasing = ShapeStyleMask { strokeCasingWidth = true, strokeCasingColor = true },
+   strokeCasingWidth = ShapeStyleMask { strokeCasingWidth = true },
+   strokeCasingColor = ShapeStyleMask { strokeCasingColor = true },
+   strokeJoin = ShapeStyleMask { strokeJoin = true },
+   strokeCap = ShapeStyleMask { strokeCap = true },
+   strokeDashPattern = ShapeStyleMask { strokeDashPattern = true }
+};
+
+public enum TextStyleKind : GraphicalStyleKind
+{
+   text = TextStyleMask { text = true },
+   font = TextStyleMask
+   {
+      fontFace = true, fontSize = true, fontBold = true, fontItalic = true, fontColor = true, fontOpacity = true,
+      fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true
+   },
+   fontFace = TextStyleMask { fontFace = true },
+   fontSize = TextStyleMask { fontSize = true },
+   fontBold = TextStyleMask { fontBold = true },
+   fontItalic = TextStyleMask { fontItalic = true },
+   fontColor = TextStyleMask { fontColor = true },
+   fontOpacity = TextStyleMask { fontOpacity = true },
+   fontOutline = TextStyleMask { fontOutlineSize = true, fontOutlineColor = true, fontOutlineOpacity = true },
+   fontOutlineSize = TextStyleMask { fontOutlineSize = true },
+   fontOutlineColor = TextStyleMask { fontOutlineColor = true },
+   fontOutlineOpacity = TextStyleMask { fontOutlineOpacity = true },
+   alignment = TextStyleMask { alignmentHorzAlign = true, alignmentVertAlign = true },
+   alignmentHorzAlign = TextStyleMask { alignmentHorzAlign = true },
+   alignmentVertAlign = TextStyleMask { alignmentVertAlign = true }
+};
+
+public enum ImageStyleKind : GraphicalStyleKind
+{
+   image = ImageStyleMask { imagePath = true },
+   imagePath = ImageStyleMask { imagePath = true },
+   tint = ImageStyleMask { tint = true },
+   hotSpot = ImageStyleMask { hotSpot = true }
 };
 
 // TODO: Replace these by class reflection
-Map<String, GraphicalStyleMask> styleIdentifierMap
+
+Map<String, GraphicalStyleKind> styleIdentifierMap
+{ [
+   { "opacity", opacity },
+   { "transform", transform },
+   { "transform3D", transform3D }
+] };
+
+Map<String, ShapeStyleKind> shapeStyleIdentifierMap
 { [
    { "fill", fill },
    { "fill.pattern", fillPattern },
@@ -143,7 +164,11 @@ Map<String, GraphicalStyleMask> styleIdentifierMap
    { "stroke.casing.color", strokeCasingColor },
    { "stroke.join", strokeJoin },
    { "stroke.cap", strokeCap },
-   { "stroke.dashPattern", strokeDashPattern },
+   { "stroke.dashPattern", strokeDashPattern }
+] };
+
+Map<String, TextStyleKind> textStyleIdentifierMap
+{ [
    { "text", text },
    { "font", font },
    { "font.face", fontFace },
@@ -156,20 +181,28 @@ Map<String, GraphicalStyleMask> styleIdentifierMap
    { "font.outline.size", fontOutlineSize },
    { "font.outline.color", fontOutlineColor },
    { "font.outline.opacity", fontOutlineOpacity },
-   //{ "size", size },
-   //{ "casing", strokeCasing },
-   //{ "outline", outline },
-   //{ "bold", bold },
-   //{ "italic", italic },
    { "alignment", alignment },
    { "alignment.horzAlign", alignmentHorzAlign },
-   { "alignment.vertAlign", alignmentVertAlign },
-   { "opacity", opacity },
-   { "transform", transform },
-   { "transform3D", transform3D }
+   { "alignment.vertAlign", alignmentVertAlign }
 ] };
 
-Map<GraphicalStyleMask, const String> stringFromMaskMap
+Map<String, ImageStyleKind> imageStyleIdentifierMap
+{ [
+   { "image", image },
+   { "hotSpot", hotSpot },
+   { "tint", tint }
+] };
+
+
+Map<GraphicalStyleKind, const String> stringFromMaskMap
+{ [
+   { opacity, "opacity" },
+   { transform, "transform" },
+   { transform3D, "transform3D" }
+] };
+
+
+Map<ShapeStyleKind, const String> shapeStringFromMaskMap
 { [
    { fill, "fill" },
    { fillPattern, "fill.pattern" },
@@ -188,13 +221,14 @@ Map<GraphicalStyleMask, const String> stringFromMaskMap
    { strokeCasingColor, "stroke.casing.color" },
    { strokeJoin, "stroke.join" },
    { strokeCap, "stroke.cap" },
-   { strokeDashPattern, "stroke.dashPattern"  },
+   { strokeDashPattern, "stroke.dashPattern"  }
+] };
+
+Map<TextStyleKind, const String> textStringFromMaskMap
+{ [
    { alignment, "alignment" },
    { alignmentHorzAlign, "alignment.horzAlign" },
    { alignmentVertAlign, "alignment.vertAlign" },
-   { opacity, "opacity" },
-   { transform, "transform" },
-   { transform3D, "transform3D" },
    { text, "text" },
    { font, "font" },
    { fontFace, "font.face" },
@@ -206,12 +240,16 @@ Map<GraphicalStyleMask, const String> stringFromMaskMap
    { fontOutline, "font.outline" },
    { fontOutlineSize, "font.outline.size" },
    { fontOutlineColor, "font.outline.color" },
-   { fontOutlineOpacity, "font.outline.opacity" },
-   //{ size, "size" },
-   //{ color, "color" },
-   //{ casing, "casing" },
-   { image, "image" }
+   { fontOutlineOpacity, "font.outline.opacity" }
 ] };
+
+Map<ImageStyleKind, const String> imageStringFromMaskMap
+{ [
+   { image, "image" },
+   { hotSpot, "hotSpot"},
+   { tint, "tint" }
+] };
+
 
 struct GraphicalStyleEvaluator : ECCSSEvaluator
 {
@@ -220,14 +258,9 @@ struct GraphicalStyleEvaluator : ECCSSEvaluator
       object.applyStyle(mSet, value);
    }
 };
-
 public class GraphicalStyle : struct
 {
 public:
-   // Properties...
-   Fill fill { };
-   Stroke stroke { };
-   Alignment2D alignment;
    int zOrder;
    bool visibility;
    float opacity;
@@ -256,13 +289,50 @@ public:
 
    private void applyDefaults(GraphicalStyleMask mask)
    {
-      if(mask.fillColor) fill.color = white;
-      if(mask.strokeColor) stroke.color = black;
       if(mask.opacity) opacity = 1.0;
       if(mask.visibility) visibility = true;
    }
 
    private void applyStyle(GraphicalStyleKind mSet, const FieldValue value)
+   {
+      switch(mSet)
+      {
+         case opacity: opacity = (float)value.r; break;
+         case visibility:
+         {
+            switch(value.type.type)
+            {
+               case integer: visibility = (bool)value.i; break;
+               case text: visibility = !strcmpi(value.s, "true") ? true : false; break;
+            }
+            break;
+         }
+         case zOrder: zOrder = (int)value.i; break;
+      }
+   }
+}
+
+public class ShapeStyle : GraphicalStyle
+{
+public:
+   // Properties...
+   Fill fill { };
+   Stroke stroke { };
+
+   //return sym for visualization classes
+   public ShapeStyle ::build(CMSSStyleSheet styleSheet, ECCSSEvaluator evaluator, Class stylesClass)
+   {
+       return (ShapeStyle)ShapeStyle::build(styleSheet, evaluator, class(ShapeStyle));
+   }
+
+   private void applyDefaults(ShapeStyleMask mask)
+   {
+      if(mask.fillColor) fill.color = white;
+      if(mask.strokeColor) stroke.color = black;
+      GraphicalStyle::applyDefaults(mask);
+   }
+
+   private void applyStyle(ShapeStyleKind mSet, const FieldValue value)
    {
       switch(mSet)
       {
@@ -282,14 +352,81 @@ public:
          case strokeJoin: stroke.join = (LineJoin)value.i; break;
          case strokeCap: stroke.cap = (LineCap)value.i; break;
          case strokeDashPattern: stroke.dashes = value.b; break;
-         //case alignmentHorzAlign: alignment.horzAlign = (HAlignment)value.i; break;
-         //case alignmentVertAlign: alignment.vertAlign = (VAlignment)value.i; break;
          // error for these:duplicate case value ; error: previously used here
          /*
          { "transform", transform },
          { "transform3D", transform3D },
          */
-         case opacity: opacity = (float)value.r; break;
+      }
+   }
+}
+
+public class TextStyle : GraphicalStyle
+{
+public:
+   // Properties..
+   String text;
+   GEFont font { outline = { } }; //eventually, Font
+   Alignment2D alignment { };
+
+   //return sym for visualization classes
+   public TextStyle ::build(CMSSStyleSheet styleSheet, ECCSSEvaluator evaluator, Class stylesClass)
+   {
+       return (TextStyle)TextStyle::build(styleSheet, evaluator, class(TextStyle));
+   }
+
+   private void applyDefaults(TextStyleMask mask)
+   {
+      if(mask.fontFace) font.face = CopyString("Arial");
+      if(mask.fontSize) font.size = 10;
+      GraphicalStyle::applyDefaults(mask);
+   }
+
+   private void applyStyle(TextStyleKind mSet, const FieldValue value)
+   {
+      switch(mSet)
+      {
+         case text: text = CopyString(value.s); break;
+         case fontFace: font.face = CopyString(value.s); break;
+         case fontSize: font.size = (float)value.r; break;
+         case fontBold: font.bold = (bool)value.i; break; //check if string?
+         case fontItalic: font.italic = (bool)value.i; break; //check if string?
+         case fontColor: font.color = (Color)value.i; break;
+         case fontOpacity: font.opacity = (float)value.r; break;
+         case fontOutlineSize: font.outline.size = (float)value.r; break;
+         case fontOutlineColor: font.outline.color = (Color)value.i; break;
+         case fontOutlineOpacity: font.outline.opacity = (float)value.r; break;
+         case alignmentHorzAlign: alignment.horzAlign = (HAlignment)value.i; break;
+         case alignmentVertAlign: alignment.vertAlign = (VAlignment)value.i; break;
+      }
+   }
+}
+
+public class ImageStyle : GraphicalStyle
+{
+public:
+   // Properties..
+   ImageResource image { };
+   Color tint;
+   Pointf hotSpot { };
+
+   //return sym for visualization classes
+   public ImageStyle ::build(CMSSStyleSheet styleSheet, ECCSSEvaluator evaluator, Class stylesClass)
+   {
+       return (ImageStyle)ImageStyle::build(styleSheet, evaluator, class(ImageStyle));
+   }
+
+   private void applyDefaults(ImageStyleMask mask)
+   {
+      GraphicalStyle::applyDefaults(mask);
+   }
+   private void applyStyle(ImageStyleKind mSet, const FieldValue value)
+   {
+      switch(mSet)
+      {
+         case imagePath: image.path = CopyString(value.s); break;
+         case tint: tint = (Color)value.i; break;
+         //case hotSpot: hotSpot = value.b; break; //maybe hotSpotX, hotSpotY???
       }
    }
 }

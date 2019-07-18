@@ -533,7 +533,7 @@ public:
                   block.nestedRules.mask |= nb.mask;
                }
             }
-            mask |= block.nestedRules.mask;
+            if(block.nestedRules) mask |= block.nestedRules.mask;
          }
          block.mask = mask;
          result = block;
