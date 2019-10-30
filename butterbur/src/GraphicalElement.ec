@@ -6,6 +6,7 @@ public enum GraphicalUnit { pixels, meters, feet, percent, points, em, screenInc
 
 public enum VAlignment { unset, top, middle, bottom, baseLine };
 public enum HAlignment { unset, left, center, right };
+public enum WellKnownType { none, center, triangle, cross, x };
 
 public class Alignment2D : uint32
 {

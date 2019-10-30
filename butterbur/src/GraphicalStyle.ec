@@ -150,6 +150,23 @@ public:
    }
 };
 
+public class WellKnownTypeStyleMask : GraphicalStyleMask
+{
+public:
+   bool wellKnownType           :1:16;
+   bool alignmentHorzAlign      :1:17;
+   bool alignmentVertAlign      :1:18;
+
+   void print(File out)
+   {
+      out.Print("{");
+      if(wellKnownType)               out.Print(" wellKnownType");
+      if(alignmentHorzAlign)          out.Print(" alignmentHorzAlign");
+      if(alignmentVertAlign)          out.Print(" alignmentVertAlign");
+      out.Print(" }");
+   }
+};
+
 public enum GraphicalStyleKind : GraphicalStyleMask
 {
    zOrder = GraphicalStyleMask { zOrder = true },
@@ -223,6 +240,16 @@ public enum ImageStyleKind : GraphicalStyleKind
    tint = ImageStyleMask { tint = true },
    hotSpot = ImageStyleMask { hotSpot = true }
 };
+
+
+public enum WellKnownTypeStyleKind : GraphicalStyleKind
+{
+   wellKnownType = WellKnownTypeStyleMask { wellKnownType = true },
+   alignment = WellKnownTypeStyleMask { alignmentHorzAlign = true, alignmentVertAlign = true },
+   alignmentHorzAlign = WellKnownTypeStyleMask { alignmentHorzAlign = true },
+   alignmentVertAlign = WellKnownTypeStyleMask { alignmentVertAlign = true }
+};
+
 
 // TODO: Replace these by class reflection
 
@@ -555,6 +582,36 @@ public:
          case imageSprite: image.sprite = CopyString(value.s); break;
          case tint: tint = (Color)value.i; break;
          //case hotSpot: hotSpot = value.b; break; //maybe hotSpotX, hotSpotY???
+         default: GraphicalStyle::applyStyle(mSet, value, unit);
+      }
+   }
+}
+
+
+public class WellKnownTypeStyle : GraphicalStyle
+{
+public:
+   // Properties..
+   WellKnownType wellKnownType;
+   Alignment2D alignment { };
+
+   //return sym for visualization classes
+   public WellKnownTypeStyle ::build(CMSSStyleSheet styleSheet, ECCSSEvaluator evaluator, Class stylesClass)
+   {
+       return (WellKnownTypeStyle)WellKnownTypeStyle::build(styleSheet, evaluator, class(WellKnownTypeStyle));
+   }
+
+   private void applyDefaults(WellKnownTypeStyleMask mask)
+   {
+      GraphicalStyle::applyDefaults(mask);
+   }
+   private void applyStyle(WellKnownTypeStyleKind mSet, const FieldValue value, int unit)
+   {
+      switch(mSet)
+      {
+         case wellKnownType: wellKnownType = (WellKnownType)value.i; break;
+         case alignmentHorzAlign: alignment.horzAlign = (HAlignment)value.i; break;
+         case alignmentVertAlign: alignment.vertAlign = (VAlignment)value.i; break;
          default: GraphicalStyle::applyStyle(mSet, value, unit);
       }
    }
