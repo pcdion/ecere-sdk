@@ -776,7 +776,7 @@ private:
       return result;
    }
 
-   JSONResult GetJSONMap(Class type, Map * map)
+   public JSONResult GetJSONMap(Class type, Map * map)
    {
       JSONResult result = syntaxError;
       SkipEmpty();
