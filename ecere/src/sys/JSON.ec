@@ -776,7 +776,7 @@ private:
       return result;
    }
 
-   public JSONResult GetJSONMap(Class type, Map * map)
+   JSONResult GetJSONMap(Class type, Map * map)
    {
       JSONResult result = syntaxError;
       SkipEmpty();
@@ -1060,7 +1060,12 @@ private:
    public JSONResult GetObject(Class objectType, void ** object)
    {
       charPos = 0, line = 1, col = 1, maxPos = 0;
-      if(objectType && objectType.type == structClass)
+      // handle maps
+      if(objectType && objectType == class(Map))
+      {
+         return GetJSONMap(objectType, (Map *)&object);
+      }
+      else if(objectType && objectType.type == structClass)
       {
          memset(object, 0, objectType.structSize);
          return _GetObject(objectType, &object, null);
