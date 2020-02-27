@@ -27,7 +27,7 @@ public class Presentation
 
    virtual void calculate(Presentation topPres, PresentationManager mgr);
    virtual void prepareDraw(RenderPassFlags flags, DrawingManager dm, const void * data);
-   virtual int pick(const Boxf region, int maxResults, PickResult * results) { return 0; }
+   virtual int pick(const Boxf region, int maxResults, PickResult * results, void * transform, void * a, void * b) { return 0; }
 
    public property MultiPresentation parent
    {
@@ -164,8 +164,7 @@ public:
             p.prepareDraw(flags, dm, data);
       }
    }
-
-   int pick(const Boxf region, int maxResults, PickResult * results)
+   int pick(const Boxf region, int maxResults, PickResult * results, void * transform, void * a, void * b)
    {
       int numResults = 0;
       Iterator<Presentation> it { subElements };
@@ -173,7 +172,7 @@ public:
       {
          Presentation p = it.data;
          if(p.pickable && p.visible)
-            numResults += p.pick(region, maxResults, results + numResults);
+            numResults += p.pick(region, maxResults, results + numResults, transform, a, b);
       }
       return numResults;
    }
@@ -182,7 +181,7 @@ public:
    {
       float w = Max(0.5f, threshold), h = Max(0.5f, threshold);
       Boxf region { pos.x - w, pos.y - h, pos.x + w, pos.y + h };
-      if(pick(region, 1, result) != 0)
+      if(pick(region, 1, result, null, null, null) != 0)
          return true;
       result = { };
       return false;
@@ -191,7 +190,7 @@ public:
    Array<PickResult> pickWithin(const Boxf region)
    {
       Array<PickResult> results { minAllocSize = 1024 };
-      results.count = pick(region, results.minAllocSize, results.array);
+      results.count = pick(region, results.minAllocSize, results.array, null, null, null);
       results.minAllocSize = 0;
       if(!results.count) delete results;
       return results;

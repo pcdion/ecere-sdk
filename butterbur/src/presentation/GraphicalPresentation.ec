@@ -407,7 +407,7 @@ public:
       }
    }
 
-   int pick(const Boxf region, int maxResults, PickResult * results)
+   int pick(const Boxf region, int maxResults, PickResult * results, void * transform, void * a, void * b)
    {
       // TODO: Proper full box test, not middle point
       if(containsPoint((region.left + region.right)/2, (region.top + region.bottom)/2))
