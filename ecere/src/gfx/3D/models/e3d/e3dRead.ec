@@ -749,7 +749,7 @@ struct E3DOptions
 
 Array<String> listTextures(File modelFile, const String fileName, Object object, E3DOptions options)
 {
-   Array<String> textures = null;
+   Array<String> textures { };
    char path[MAX_LOCATION];
    E3DContext ctx { path = path };
 
@@ -765,16 +765,17 @@ Array<String> listTextures(File modelFile, const String fileName, Object object,
    else
       ctx.texturesByID = { };
 
-   textures = listTexturesReadBlocks(ctx, modelFile, 0, 0, modelFile.GetSize(), object);
+
+   listTexturesReadBlocks(ctx, modelFile, 0, 0, modelFile.GetSize(), object, textures);
 
    delete ctx;
 
    return textures;
 };
 
-static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType containerType, uint64 pbStart, uint64 end, void * data)
+static /*Array<String>*/ void listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType containerType, uint64 pbStart, uint64 end, void * data, Array<String> textureList)
 {
-   Array<String> textureList = null;
+   //Array<String> textureList = null;
    //Object object = data; // data is most often the Mesh...
    //Mesh mesh = data;
    uint64 pos = pbStart;
@@ -808,7 +809,8 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
                f.Read(cData, 1, cSize); //bEnd - pos);
                tmp.buffer = decodeLZMA(cData, cSize, size, null);
                tmp.size = size;
-               textureList = listTexturesReadBlocks(ctx, tmp, containerType, 0, size, subData);
+               listTexturesReadBlocks(ctx, tmp, containerType, 0, size, subData, textureList);
+
                delete cData;
                delete tmp;
 
@@ -846,16 +848,16 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
             //case pbrSpecDiffuseMap: { Material mat = data; subData = &mat.reflectMap; readSubBlocks = true; break; }
             case texture:
             {
-               Bitmap bitmap { };
+               /*Bitmap bitmap { };
                subData = bitmap;
-               incref bitmap;
+               incref bitmap;*/
                readSubBlocks = true;
                break;
             }
             case textureName:
             {
                char * name = readString(f);
-               Bitmap bitmap;
+               /*Bitmap bitmap;
 
                if(containerType == texture)
                   bitmap = data;
@@ -863,7 +865,7 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
                {
                   *(Bitmap *)data = bitmap = { };
                }
-               if(bitmap)
+               if(bitmap)*/
                {
                   char ext[MAX_EXTENSION];
                   char path[MAX_LOCATION];
@@ -907,7 +909,7 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
                            sprintf(path, "%s%d&outputFormat=%s", ctx.texturesQuery, id, ext);
                      }
 
-                     if(!textureList) textureList = { };
+                     //if(!textureList) textureList = { };
                      textureList.Add(CopyString(path));
                   }
                }
@@ -923,24 +925,27 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
                {
                   if(ctx.texturesByID)
                   {
+                     ctx.curTextureID = id;
+                     /*
                      if(ctx.texturesByID[id]) // is this necessary?
                      {
-                        delete (Bitmap)data;
+                        //delete (Bitmap)data;
                         readSubBlocks = false;
                      }
                      else
                      {
+
                         Bitmap bitmap = data;
                         incref bitmap;
                         ctx.curTextureID = id;
                         ctx.texturesByID[id] = bitmap;
-                     }
+                     }*/
                   }
                }
                else
                {
-                  Bitmap * bPtr = data;
-                  *bPtr = ctx.texturesByID ? ctx.texturesByID[id] : null;
+                  //Bitmap * bPtr = data;
+                  //*bPtr = ctx.texturesByID ? ctx.texturesByID[id] : null;
                }
                texMutex.Release();
                break;
@@ -964,16 +969,7 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
          if(readSubBlocks)
          {
             // this sometimes has an address when it shouldn't
-            Array<String> tl = listTexturesReadBlocks(ctx, f, header.type, pos, bEnd, subData);
-
-            for(t : tl)
-            {
-               //if(strlen(t) >0)
-               {
-                  if(!textureList) textureList = { };
-                  textureList.Add(CopyString(t));
-               }
-            }
+            listTexturesReadBlocks(ctx, f, header.type, pos, bEnd, subData, textureList);
          }
 
          f.Seek(bEnd, start);
@@ -981,7 +977,7 @@ static Array<String> listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType
       }
    }
    indent--;
-   return textureList;
+   //return textureList;
 }
 
 void readE3D(File f, const String fileName, Object object, DisplaySystem displaySystem, E3DOptions options) //Array<String> textures
