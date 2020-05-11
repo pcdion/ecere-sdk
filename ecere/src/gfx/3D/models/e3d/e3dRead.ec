@@ -747,7 +747,7 @@ struct E3DOptions
    bool compressedTextures;
 };
 
-Array<String> listTextures(File modelFile, const String fileName, Object object, E3DOptions options)
+Array<String> listTextures(File modelFile, const String fileName, E3DOptions options)
 {
    Array<String> textures { };
    char path[MAX_LOCATION];
@@ -765,8 +765,7 @@ Array<String> listTextures(File modelFile, const String fileName, Object object,
    else
       ctx.texturesByID = { };
 
-
-   listTexturesReadBlocks(ctx, modelFile, 0, 0, modelFile.GetSize(), object, textures);
+   listTexturesReadBlocks(ctx, modelFile, 0, 0, modelFile.GetSize(), null, textures);
 
    delete ctx;
 
@@ -775,9 +774,6 @@ Array<String> listTextures(File modelFile, const String fileName, Object object,
 
 static /*Array<String>*/ void listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType containerType, uint64 pbStart, uint64 end, void * data, Array<String> textureList)
 {
-   //Array<String> textureList = null;
-   //Object object = data; // data is most often the Mesh...
-   //Mesh mesh = data;
    uint64 pos = pbStart;
    static int indent = 0;
    indent++;
