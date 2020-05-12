@@ -226,8 +226,7 @@ static void readBlocks(E3DContext ctx, File f, DisplaySystem displaySystem, E3DB
                      const String authKey = strstr(ctx.texturesQuery, "?authKey=");
                      int l = authKey ? (int)(authKey - ctx.texturesQuery) : strlen(ctx.texturesQuery);
                      bool rest = strstr(ctx.texturesQuery, "/textures") ? true : false;
-                     char * slash;
-                     char cachedName[MAX_LOCATION*10];
+
                      if(ctx.compressedTextures) strcpy(ext, "etc2");
 
                      if(ctx.resolution > 0)
@@ -255,14 +254,9 @@ static void readBlocks(E3DContext ctx, File f, DisplaySystem displaySystem, E3DB
                         }
                         else
                            sprintf(path, "%s%d&outputFormat=%s", ctx.texturesQuery, id, ext);
-
                      }
-                     slash = strstr(path, "/");
-                     slash = strstr(slash+1, "/");
-                     strcpy(cachedName, slash + 1);
 
-                     f = FileOpen(cachedName, read);
-                     // shouldn't happen, the networkThread will handle cases where texture is not in cache
+                     f = FileOpen(path, read);
                      //if(!f)
                         //f = (strstr(path, "http://") == path || strstr(path, "https://")) ? downloadFile(path) : FileOpen(path, read);
 
