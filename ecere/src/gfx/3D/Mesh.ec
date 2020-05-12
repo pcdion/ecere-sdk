@@ -1031,7 +1031,7 @@ public:
                         {
                            // TOCHECK: Shouldn't the overall bitmap width be set?
                            Bitmap bmp = convBitmap.bitmaps && convBitmap.numMipMaps ? convBitmap.bitmaps[0] : convBitmap;
-                           at->_init(convBitmap.numMipMaps ? convBitmap.numMipMaps : 1, bmp.width, bmp.height, 256,
+                           at->_init(convBitmap.numMipMaps ? convBitmap.numMipMaps : 1, 512 /*bmp.width*/, 512 /*bmp.height*/, 256,
                               convBitmap.pixelFormat == pixelFormatETC2RGBA8 ? GL_COMPRESSED_RGBA8_ETC2_EAC : GL_RGBA8,
                               false);
                         }

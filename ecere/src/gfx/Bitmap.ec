@@ -1063,8 +1063,10 @@ public:
 
          if(mipMaps)
          {
-            while(w * 2 < h) w *= 2;
-            while(h * 2 < w) h *= 2;
+
+            w = 512;
+            h = 512;
+
             numMipMaps = 1+Max(log2i(w), log2i(h));
          }
 
