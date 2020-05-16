@@ -6,7 +6,8 @@ public import "ecere"
 
 import "e3dDefs"
 
-#define SHARE_INDICES   // Define to use mesh.indices and group.baseIndex
+// comment out temporarily
+//#define SHARE_INDICES   // Define to use mesh.indices and group.baseIndex
 
 static struct E3DBlockHeader
 {
