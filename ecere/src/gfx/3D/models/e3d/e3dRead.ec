@@ -51,7 +51,7 @@ TempFile downloadFile(const String urlOrig);
 // Right now this is global and requires a lock... Support supplying optional textures ID map ?
 static Mutex texMutex { };
 
-static class E3DContext : struct
+public class E3DContext : struct
 {
    Map<uint, Bitmap> texturesByID;
    const String path;
@@ -255,7 +255,6 @@ static void readBlocks(E3DContext ctx, File f, DisplaySystem displaySystem, E3DB
                         }
                         else
                            sprintf(path, "%s%d&outputFormat=%s", ctx.texturesQuery, id, ext);
-
                      }
 
                      f = FileOpen(path, read);
@@ -730,7 +729,7 @@ static void readBlocks(E3DContext ctx, File f, DisplaySystem displaySystem, E3DB
    indent--;
 }
 
-struct E3DOptions
+public struct E3DOptions
 {
    Map<uint, Bitmap> texturesByID;
    AVLTree<Material> materials;    // Not currently resolving IDs globally for materials...
@@ -740,6 +739,7 @@ struct E3DOptions
    bool compressedTextures;
 };
 
+/*
 Array<String> listTextures(File modelFile, const String fileName, E3DOptions options)
 {
    Array<String> textures { };
@@ -758,14 +758,15 @@ Array<String> listTextures(File modelFile, const String fileName, E3DOptions opt
    else
       ctx.texturesByID = { };
 
+
    listTexturesReadBlocks(ctx, modelFile, 0, 0, modelFile.GetSize(), null, textures);
 
    delete ctx;
 
    return textures;
-};
+};*/
 
-static /*Array<String>*/ void listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType containerType, uint64 pbStart, uint64 end, void * data, Array<String> textureList)
+/*Array<String>*/ void listTexturesReadBlocks(E3DContext ctx, File f, E3DBlockType containerType, uint64 pbStart, uint64 end, void * data, Array<String> textureList)
 {
    uint64 pos = pbStart;
    static int indent = 0;
