@@ -254,6 +254,24 @@ public class Time : double
       }*/
       return tempString;
    }
+   bool OnGetDataFromString(const char * string)
+   {
+      bool result = false;
+      char * s = CopyString(string);
+      char * tokens[20];
+      int count = TokenizeWith(s, 20, tokens, ":", false);
+      int c;
+      int multiplier = count>1 ? 60 : 1;
+      if(count) this = 0;
+      // handles h:m:s, h:m, or m
+      for(c=0;c<count;c++)
+      {
+         this += multiplier * strtol(tokens[c], null, 0);
+         multiplier/=60;
+         result = true;
+      }
+      return result;
+   }
 }
 
 public class Seconds : Time { public property Time {} };
