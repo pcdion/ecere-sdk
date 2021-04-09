@@ -257,19 +257,24 @@ public class Time : double
    bool OnGetDataFromString(const char * string)
    {
       bool result = false;
-      char * s = CopyString(string);
+      char s[100];
       char * tokens[20];
-      int count = TokenizeWith(s, 20, tokens, ":", false);
+      int count;
       int c;
-      int multiplier = count>1 ? 60 : 1;
+      int multiplier = 1;
+      strncpy(s, string ? string : "", MAX_LOCATION);
+      s[99] = 0;
+      count = TokenizeWith(s, 20, tokens, ":", false);
+
       if(count) this = 0;
-      // handles h:m:s, h:m, or m
-      for(c=0;c<count;c++)
+      // handles m:s, or m
+      for(c=count-1;c>=0;c--)
       {
          this += multiplier * strtol(tokens[c], null, 0);
-         multiplier/=60;
+         multiplier*=60;
          result = true;
       }
+      //delete s;
       return result;
    }
 }
