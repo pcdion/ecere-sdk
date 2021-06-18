@@ -776,7 +776,6 @@ public:
       s[c] = '\0';
       return c;
    }
-
    bool CopyToFile(File f)
    {
       bool result = false;
@@ -800,7 +799,6 @@ public:
       Seek(0, start);
       return result;
    }
-
    bool CopyTo(const char * outputFileName)
    {
       bool result = false;
