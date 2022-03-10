@@ -2438,7 +2438,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
       bool quote = true;
       ObjectNotationType onType = eCON ? econ : json;
 
-      if(objectType._vTbl[__ecereVMethodID_class_OnGetString] != objectType.base._vTbl[__ecereVMethodID_class_OnGetString])
+      if((objectType._vTbl[__ecereVMethodID_class_OnGetString] != objectType.base._vTbl[__ecereVMethodID_class_OnGetString]) || (objectType.type == normalClass && !strcmp(objectType.dataTypeString, "char *")))
       {
          char buffer[16384]; // TODO: Improve OnGetString() to support returning dynamic memory that must be freed
          buffer[0] = 0;
@@ -2467,7 +2467,7 @@ static bool WriteONObject(File f, Class objectType, void * object, int indent, b
       }
       else
       {
-         Class _class = (objectType.type == normalClass) ? ((Instance)object)._class : objectType;
+         Class _class = (objectType.type == normalClass && strcmp(objectType.dataTypeString, "char *")) ? ((Instance)object)._class : objectType;
          Property prop;
          int c;
          bool isFirst = true;
