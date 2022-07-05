@@ -214,11 +214,11 @@ CMSSExpression simplifyResolved(FieldValue val, CMSSExpression e)
    if(destType && e.expType != destType)
    {
       if(destType == class(float) || destType == class(double))
-         convertFieldValue(val, real, val);
+         convertFieldValue(val, {real}, val);
       else if(destType == class(String))
-         convertFieldValue(val, text, val);
+         convertFieldValue(val, {text}, val);
       else if(destType == class(int64) || destType == class(int) || destType == class(uint64) || destType == class(uint))
-         convertFieldValue(val, integer, val);
+         convertFieldValue(val, {integer}, val);
    }
 
    if(e._class != class(CMSSExpString) && e._class != class(CMSSExpConstant) && e._class != class(CMSSExpInstance) && e._class != class(CMSSExpArray))
@@ -701,7 +701,7 @@ public:
          FieldValue val1 { };
          FieldValue val2 { };
          ExpFlags flags1, flags2;
-         FieldType type;
+         FieldTypeEx type {};
          OpTable * tbl;
 
          // TODO: Review this (inheritance of parent expression dest type?)
@@ -711,15 +711,18 @@ public:
          flags2 = exp2.compute(val2, evaluator, computeType, stylesClass);
 
          if(op >= stringStartsWith && op <= stringNotContains)
-            type = text;
+            type.type = text;
          else
-            type = (val1.type.type == real || val2.type.type == real) ? real :
+         {
+            type.type = (val1.type.type == real || val2.type.type == real) ? real :
                    (val1.type.type == integer || val2.type.type == integer) ? integer : text;
+            type.isDateTime = (val1.type.isDateTime || val2.type.isDateTime);
+         }
          tbl = &opTables[type];
 
          flags = flags1 | flags2;
 
-         if(flags1.resolved && val1.type.type != type)
+         if(flags1.resolved && val1.type.type != type.type)
             convertFieldValue(val1, type, val1);
 
          if(op == in)
@@ -741,9 +744,9 @@ public:
                   {
                      if(f2.resolved)
                      {
-                        if(v2.type.type != type)
+                        if(v2.type.type != type.type)
                            convertFieldValue(v2, type, v2);
-                        if(v2.type.type == type)
+                        if(v2.type.type == type.type)
                         {
                            tbl->Equ(v, val1, v2);
                            if(v.i)
@@ -766,7 +769,7 @@ public:
                val1 = { type = { integer }, i = 0 };
             if(!flags2.resolved)
                val2 = { type = { integer }, i = 0 };
-            if(val2.type.type != type)
+            if(val2.type.type != type.type)
                convertFieldValue(val2, type, val2);
 
             if(val1.type.type == val2.type.type)
@@ -2766,16 +2769,16 @@ static bool realMod(FieldValue val, const FieldValue op1, const FieldValue op2)
    return true;
 }
 
-public void convertFieldValue(const FieldValue src, FieldType type, FieldValue dest)
+public void convertFieldValue(const FieldValue src, FieldTypeEx type, FieldValue dest)
 {
    if(src.type.type == text)
    {
-      if(type == real)
+      if(type.type == real)
       {
          dest.r = strtod(src.s, null);
          dest.type = { real };
       }
-      else if(type == integer)
+      else if(type.type == integer)
       {
          dest.i = strtoll(src.s, null, 0);
          dest.type = { integer };
@@ -2783,12 +2786,17 @@ public void convertFieldValue(const FieldValue src, FieldType type, FieldValue d
    }
    else if(src.type.type == integer)
    {
-      if(type == real)
+      if(type.isDateTime)
+      {
+         dest.i = (int64)(SecSince1970)src.i;
+         dest.type = { integer };
+      }
+      else if(type.type == real)
       {
          dest.r = (double)src.i;
          dest.type = { real };
       }
-      else if(type == text)
+      else if(type.type == text)
       {
          dest.s = PrintString(src.i);
          dest.type = { text };
@@ -2796,12 +2804,12 @@ public void convertFieldValue(const FieldValue src, FieldType type, FieldValue d
    }
    else if(src.type.type == real)
    {
-      if(type == integer)
+      if(type.type == integer)
       {
          dest.i = (int64)src.r;
          dest.type = { integer };
       }
-      else if(type == text)
+      else if(type.type == text)
       {
          dest.s = PrintString(src.r);
          dest.type = { text, mustFree = true };
@@ -2809,12 +2817,12 @@ public void convertFieldValue(const FieldValue src, FieldType type, FieldValue d
    }
    else if(src.type.type == nil)
    {
-      if(type == integer)
+      if(type.type == integer)
       {
          dest.i = 0;
          dest.type = { integer };
       }
-      else if(type == text)
+      else if(type.type == text)
       {
          dest.s = null;
          dest.type = { text };
