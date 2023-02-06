@@ -708,7 +708,8 @@
                         }
                      ]
                   },
-                  "Condition.ec"
+                  "Condition.ec",
+                  "DiskCachedFile.ec"
                ],
                "Configurations" : [
                   {
