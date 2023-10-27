@@ -1,10 +1,13 @@
 import "ecere"
 
+public enum TestParameters { none, collection, process, execRequest, subset, fields, derived, filter, scale, tms, tile, format, style, time };
+
 public class eTest
 {
 public:
    const String inputPath;  inputPath = "/test_data";
    const String outputPath;
+   Map<TestParameters, String> parameters;
 
    void pass(const String testID, const String testCase)
    {
@@ -20,6 +23,11 @@ public:
    {
       PrintLn("!FAILED!  [", _class.name, ":", testID, testCase ? ":" : "", testCase ? testCase : "", "]", $" because ", reason, ".");
       app.exitCode = 1;
+   }
+
+   ~eTest()
+   {
+      if(parameters) parameters.Free(), delete parameters;
    }
 
    virtual bool prepareTests();
@@ -59,9 +67,67 @@ class TestApp : GuiApplication
 
          if(ut)
          {
-            if(argc > 2) ut.inputPath = argv[2];
-            if(argc > 3)
-               ut.outputPath = argv[3];
+            int c, numOptions = 0;
+            //bool isOption = false;
+            TestParameters currentOption = none;
+            if(argc > 2)
+            {
+               for(c = 2; c<argc; c++)
+               {
+                  const char * arg = argv[c];
+                  if(arg[0] == '-')
+                  {
+                     if(!ut.parameters) ut.parameters = {};
+
+                     if(!strcmp(arg + 1, "collection"))
+                        currentOption = collection;
+                     else if(!strcmp(arg + 1, "subset"))
+                        currentOption = subset;
+                     else if(!strcmp(arg + 1, "fields"))
+                        currentOption = fields;
+                     else if(!strcmp(arg + 1, "derived"))
+                        currentOption = derived;
+                     else if(!strcmp(arg + 1, "filter"))
+                        currentOption = filter;
+                     else if(!strcmp(arg + 1, "process"))
+                        currentOption = process;
+                     else if(!strcmp(arg + 1, "format"))
+                        currentOption = format;
+                     else if(!strcmp(arg + 1, "tms"))
+                        currentOption = tms;
+                     else if(!strcmp(arg + 1, "scale"))
+                        currentOption = scale;
+                     else if(!strcmp(arg + 1, "execRequest"))
+                        currentOption = execRequest;
+                     else if(!strcmp(arg + 1, "time"))
+                        currentOption = time;
+                     else if(!strcmp(arg + 1, "tile"))
+                        currentOption = tile;
+                     else
+                        currentOption = none;
+                     if(currentOption != none)
+                        numOptions++;
+                  }
+                  else if(currentOption != none)
+                  {
+                     ut.parameters[currentOption] = CopyString(arg);
+                     currentOption = none;
+                  }
+                  else
+                  {
+                     int index = 2 + (numOptions *2);
+                     if(c == index)
+                        ut.inputPath = CopyString(arg);
+                     else if(c > index)
+                        ut.outputPath = CopyString(arg);
+                  }
+               }
+               if(argc <= 3)
+               {
+                  sprintf(outputDir, "output_%s", ut._class.name);
+                  ut.outputPath = outputDir;
+               }
+            }
             else
             {
                sprintf(outputDir, "output_%s", ut._class.name);
