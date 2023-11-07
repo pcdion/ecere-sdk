@@ -1,6 +1,6 @@
 import "ecere"
 
-public enum TestParameters { none, collection, process, execRequest, subset, fields, derived, filter, scale, tms, tile, format, style, time };
+public enum TestParameters { none, collection, process, execRequest, subset, fields, derived, filter, scale, tms, tile, format, style, time, bearerToken, credentials };
 
 public class eTest
 {
@@ -103,6 +103,10 @@ class TestApp : GuiApplication
                         currentOption = time;
                      else if(!strcmp(arg + 1, "tile"))
                         currentOption = tile;
+                     else if(!strcmp(arg + 1, "bearerToken"))
+                        currentOption = bearerToken;
+                     else if(!strcmp(arg + 1, "credentials"))
+                        currentOption = credentials;
                      else
                         currentOption = none;
                      if(currentOption != none)
