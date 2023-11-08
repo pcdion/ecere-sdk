@@ -42,21 +42,6 @@ class TestApp : GuiApplication
       OldLink d;
       TestAction action = test;
 
-      if(argc > 1)
-      {
-         const String sAction = argv[1];
-              if(!strcmpi(sAction, "test"));
-         else if(!strcmpi(sAction, "prepare")) action = prepare;
-         else if(!strcmpi(sAction, "clean"))   action = clean;
-         else if(!strcmpi(sAction, "keep"))    action = keep;
-         else
-         {
-            PrintLn($"Syntax: ", argv[0], $" [[[test | prepare | clean] <inputs dir> [<outputs dir>]]]");
-            exitCode = 1;
-            return;
-         }
-      }
-
       for(d = class(eTest).derivatives.first; d; d = d.next)
       {
          subclass(eTest) c = d.data;
@@ -67,11 +52,25 @@ class TestApp : GuiApplication
          {
             int c, numOptions = 0;
             const String currentOption = null;
-            if(argc > 2)
+            for(c = 1; c<argc; c++)
             {
-               for(c = 2; c<argc; c++)
+               const char * arg = argv[c];
+               if(c == 1)
                {
-                  const char * arg = argv[c];
+                  //const String sAction = argv[1];
+                  if(!strcmpi(arg, "test"));
+                  else if(!strcmpi(arg, "prepare")) action = prepare;
+                  else if(!strcmpi(arg, "clean"))   action = clean;
+                  else if(!strcmpi(arg, "keep"))    action = keep;
+                  else
+                  {
+                     PrintLn($"Syntax: ", argv[0], $" [[[test | prepare | clean] <inputs dir> [<outputs dir>]]]");
+                     exitCode = 1;
+                     return;
+                  }
+               }
+               else
+               {
                   if(arg[0] == '-')
                   {
                      if(!ut.parameters) ut.parameters = {};
@@ -93,13 +92,8 @@ class TestApp : GuiApplication
                         ut.outputPath = CopyString(arg);
                   }
                }
-               if(argc <= 3)
-               {
-                  sprintf(outputDir, "output_%s", ut._class.name);
-                  ut.outputPath = outputDir;
-               }
             }
-            else
+            if(!ut.outputPath)
             {
                sprintf(outputDir, "output_%s", ut._class.name);
                ut.outputPath = outputDir;
