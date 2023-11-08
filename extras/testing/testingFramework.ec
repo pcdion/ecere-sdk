@@ -1,13 +1,11 @@
 import "ecere"
 
-public enum TestParameters { none, collection, process, execRequest, subset, fields, derived, filter, scale, tms, tile, format, style, time, bearerToken, credentials };
-
 public class eTest
 {
 public:
    const String inputPath;  inputPath = "/test_data";
    const String outputPath;
-   Map<TestParameters, String> parameters;
+   Map<String, String> parameters;
 
    void pass(const String testID, const String testCase)
    {
@@ -68,8 +66,7 @@ class TestApp : GuiApplication
          if(ut)
          {
             int c, numOptions = 0;
-            //bool isOption = false;
-            TestParameters currentOption = none;
+            const String currentOption = null;
             if(argc > 2)
             {
                for(c = 2; c<argc; c++)
@@ -78,44 +75,14 @@ class TestApp : GuiApplication
                   if(arg[0] == '-')
                   {
                      if(!ut.parameters) ut.parameters = {};
-
-                     if(!strcmp(arg + 1, "collection"))
-                        currentOption = collection;
-                     else if(!strcmp(arg + 1, "subset"))
-                        currentOption = subset;
-                     else if(!strcmp(arg + 1, "fields"))
-                        currentOption = fields;
-                     else if(!strcmp(arg + 1, "derived"))
-                        currentOption = derived;
-                     else if(!strcmp(arg + 1, "filter"))
-                        currentOption = filter;
-                     else if(!strcmp(arg + 1, "process"))
-                        currentOption = process;
-                     else if(!strcmp(arg + 1, "format"))
-                        currentOption = format;
-                     else if(!strcmp(arg + 1, "tms"))
-                        currentOption = tms;
-                     else if(!strcmp(arg + 1, "scale"))
-                        currentOption = scale;
-                     else if(!strcmp(arg + 1, "execRequest"))
-                        currentOption = execRequest;
-                     else if(!strcmp(arg + 1, "time"))
-                        currentOption = time;
-                     else if(!strcmp(arg + 1, "tile"))
-                        currentOption = tile;
-                     else if(!strcmp(arg + 1, "bearerToken"))
-                        currentOption = bearerToken;
-                     else if(!strcmp(arg + 1, "credentials"))
-                        currentOption = credentials;
-                     else
-                        currentOption = none;
-                     if(currentOption != none)
+                     currentOption = arg+1;//CopyString(arg+1);
+                     if(currentOption != null)
                         numOptions++;
                   }
-                  else if(currentOption != none)
+                  else if(currentOption != null)
                   {
                      ut.parameters[currentOption] = CopyString(arg);
-                     currentOption = none;
+                     currentOption = null;
                   }
                   else
                   {
