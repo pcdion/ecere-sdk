@@ -428,6 +428,8 @@ public struct ECCSSEvaluator
       }
       return expType;
    }
+   virtual Instance computeInstance(void * instData, CMSSExpInstance inst);
+
    virtual void ::applyStyle(void * object, StylesMask mSet, const FieldValue value, int unit);
 
    // NOTE: These are quite likely to get ridden of with more generic code...
