@@ -1535,8 +1535,6 @@ public:
       }
       else if(computeType == runtime)
       {
-         CMSSSpecName specName = instance ? (CMSSSpecName)instance._class : null;
-         Class c = specName ? eSystem_FindClass(specName._class.module, specName.name) : destType;
          if(instData)
          {
             if(expType && expType.type != structClass)
