@@ -341,6 +341,7 @@ public struct ECCSSEvaluator
    virtual Class computeFunction(FieldValue value, const FieldValue e, const FieldValue * args, int numArgs, ExpFlags * flags)
    {
       Class expType = null;
+      value = { { nil } };
 
       if(e.type.type == integer)
       {
@@ -358,6 +359,7 @@ public struct ECCSSEvaluator
                      strlwr(value.s);
                   else
                      strupr(value.s);
+                  expType = class(String);
                }
                break;
             }
@@ -382,6 +384,7 @@ public struct ECCSSEvaluator
                   else
                      value.s = CopyString(args[0].s);
                   value.type = { text, true };
+                  expType = class(String);
                }
                break;
             }
@@ -391,6 +394,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = formatValues(args[0].s, numArgs-1, &args[1]);
+                  expType = class(String);
                }
                break;
             }
@@ -404,6 +408,7 @@ public struct ECCSSEvaluator
                   value.r = pow(
                      args[0].type.type == integer ? (double)args[0].i : args[0].r,
                      args[1].type.type == integer ? (double)args[1].i : args[1].r);
+                  expType = class(double);
                }
                break;
             }
@@ -413,6 +418,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { type = integer/*, format = boolean*/ };
                   value.i = StringLikePattern(args[0].s, args[1].s);
+                  expType = class(bool);
                }
                break;
             }
@@ -422,6 +428,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = casei(args[0].s);
+                  expType = class(String);
                }
                break;
             }
@@ -431,6 +438,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = accenti(args[0].s);
+                  expType = class(String);
                }
                break;
             }
@@ -772,13 +780,37 @@ public:
    }
 }
 
+static void deleteInstance(Class type, void * instData)
+{
+   if(type && type.type != structClass)
+   {
+      if(type.type != noHeadClass) // TOCHECK: No ref count, likely deleted elsewhere
+         eInstance_DecRef(instData);
+      else
+      {
+         if(type.Destructor)
+            type.Destructor(instData);
+         eSystem_Delete(instData);
+      }
+   }
+   else
+      delete instData;
+}
+
 private Instance createGenericInstance(CMSSInstantiation inst, Class destType, ECCSSEvaluator evaluator, ExpFlags * flg)
 {
    CMSSSpecName specName = inst ? (CMSSSpecName)inst._class : null;
    Class c = specName ? eSystem_FindClass(specName._class.module, specName.name) : destType;
    Instance instance = c && c.structSize ? eInstance_New(c) : null;
    if(instance)
+   {
       setGenericInstanceMembers(instance, inst, evaluator, flg, c);
+      if(!flg->resolved)
+      {
+         deleteInstance(c, instance);
+         instance = null;
+      }
+   }
    return instance;
 }
 
@@ -818,6 +850,7 @@ private void setGenericBitMembers(CMSSExpInstance expInst, uint64 * bits, ECCSSE
 
 private void setGenericInstanceMembers(Instance object, CMSSInstantiation instance, ECCSSEvaluator evaluator, ExpFlags * flg, Class stylesClass)
 {
+   bool unresolved = false;
    if(instance)
    {
       for(i : instance.members)
@@ -836,7 +869,8 @@ private void setGenericInstanceMembers(Instance object, CMSSInstantiation instan
                   ExpFlags flag = exp.compute(val, evaluator, runtime, stylesClass);
                   if(stylesClass && stylesClass == class(DateTime) && val.type.type == text)
                   {
-                     ((DateTime *)object)->OnGetDataFromString(val.s);
+                     if(((DateTime *)object)->OnGetDataFromString(val.s))
+                        flg->resolved = true;
                      return;
                   }
 
@@ -977,6 +1011,8 @@ private void setGenericInstanceMembers(Instance object, CMSSInstantiation instan
    #endif
                      }
                   }
+                  if(!flag.resolved)
+                     unresolved = true;
                   *flg |= flag;
                }
                else
@@ -987,6 +1023,7 @@ private void setGenericInstanceMembers(Instance object, CMSSInstantiation instan
          }
       }
    }
+   flg->resolved = !unresolved;
 }
 
 public class StylingRuleBlock : CMSSNode
