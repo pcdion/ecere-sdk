@@ -368,6 +368,7 @@ public struct ECCSSEvaluator
    virtual Class computeFunction(FieldValue value, const FieldValue e, const FieldValue * args, int numArgs, ExpFlags * flags)
    {
       Class expType = null;
+      value = { { nil } };
 
       if(e.type.type == integer)
       {
@@ -385,6 +386,7 @@ public struct ECCSSEvaluator
                      strlwr(value.s);
                   else
                      strupr(value.s);
+                  expType = class(String);
                }
                break;
             }
@@ -409,6 +411,7 @@ public struct ECCSSEvaluator
                   else
                      value.s = CopyString(args[0].s);
                   value.type = { text, true };
+                  expType = class(String);
                }
                break;
             }
@@ -418,6 +421,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = formatValues(args[0].s, numArgs-1, &args[1]);
+                  expType = class(String);
                }
                break;
             }
@@ -455,6 +459,7 @@ public struct ECCSSEvaluator
                   value.r = pow(
                      args[0].type.type == integer ? (double)args[0].i : args[0].r,
                      args[1].type.type == integer ? (double)args[1].i : args[1].r);
+                  expType = class(double);
                }
                break;
             }
@@ -474,6 +479,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { type = integer/*, format = boolean*/ };
                   value.i = StringLikePattern(args[0].s, args[1].s);
+                  expType = class(bool);
                }
                break;
             }
@@ -483,6 +489,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = casei(args[0].s);
+                  expType = class(String);
                }
                break;
             }
@@ -492,6 +499,7 @@ public struct ECCSSEvaluator
                {
                   value.type = { text, true };
                   value.s = accenti(args[0].s);
+                  expType = class(String);
                }
                break;
             }
