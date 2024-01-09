@@ -1412,11 +1412,14 @@ public:
             strcat(name, type.name + 9);
             type = eSystem_FindClass(__thisModule.application, name);
          }
-         array = eInstance_New(type);
-         array.size = elements.GetCount();
-         array._refCount = 1;
 
-         flags.resolved = true;
+         if(type == class(Array) || eClass_IsDerived(type, class(Container)) || eClass_IsDerived(type, class(Array)))
+         {
+            array = eInstance_New(type);
+            array.size = elements.GetCount();
+            array._refCount = 1;
+            flags.resolved = true;
+         }
       }
 
       for(e : elements)
@@ -1425,7 +1428,7 @@ public:
          FieldValue v { };
          ExpFlags flg;
 
-         if(type)
+         if(type && eClass_IsDerived(type, class(Container)))
          {
             ClassTemplateArgument a = type.templateArgs[0];
             Class c = a.dataTypeClass;
