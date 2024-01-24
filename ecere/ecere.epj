@@ -59,6 +59,9 @@
       {
          "Name" : "Win32",
          "Options" : {
+            "PreprocessorDefinitions" : [
+               "NOT_OPENSSL_CURL"
+            ],
             "IncludeDirs" : [
                "../deps/jpeg-9a",
                "../deps/libpng-1.6.12",
@@ -85,8 +88,8 @@
                "winspool",
                "imm32",
                "ungif",
-               "ssl",
-               "crypto"
+               "crypto",
+               "ssl"
             ],
             "LibraryDirs" : [
                "../deps/zlib-1.2.8/obj/release.$(PLATFORM)$(COMPILER_SUFFIX)",
