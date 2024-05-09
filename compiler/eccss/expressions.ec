@@ -605,7 +605,7 @@ public:
    ExpFlags compute(FieldValue value, ECCSSEvaluator evaluator, ComputeType computeType, Class stylesClass)
    {
       value.s = string;
-      value.type.type = text;
+      value.type = { type = text };
       return ExpFlags { resolved = true };
    }
 
