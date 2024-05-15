@@ -357,7 +357,7 @@ public class CMSSLexer
                         int copySize = Min(pos.pos - start+2, LEXER_TEXT_BUFFER_SIZE-1);
                         strncpy(text, input + start-1, copySize);
                         text[copySize] = 0;
-                        type = isChar ? constant : stringLiteral;
+                        type = /*isChar ? constant : */stringLiteral;
                      }
                   }
                   else
