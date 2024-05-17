@@ -1541,7 +1541,7 @@ public:
                   {
                      if(sm & m)
                      {
-                        applyStyle(object, sm & m, evaluator, e, &f);
+                        applyStyle(object, sm & m, evaluator, e, &f, 0);
                         *flg |= f;
                         m &= ~sm;
                         result = m;
@@ -1608,7 +1608,7 @@ public:
                   StylesMask sm = member.stylesMask;
                   if(sm & m)
                   {
-                     applyStyle(object, sm & m, evaluator, e, flg);
+                     applyStyle(object, sm & m, evaluator, e, flg, 0);
                      m &= ~sm;
                   }
                   itMember = itMember.prev;
@@ -1620,12 +1620,28 @@ public:
       return m;
    }
 
-   private static void ::applyStyle(void * object, StylesMask mSet, ECCSSEvaluator evaluator, CMSSExpression e, ExpFlags * flg)
+   private static void ::applyStyle(void * object, StylesMask mSet, ECCSSEvaluator evaluator, CMSSExpression e, ExpFlags * flg, int unitVal)
    {
-      CMSSExpInstance inst = e && e._class == class(CMSSExpInstance) ? (CMSSExpInstance)e : null;
-      CMSSExpArray arr = e && e._class == class(CMSSExpArray) ? (CMSSExpArray)e : null;
-      int unit = 0;
-
+      CMSSExpInstance inst = null;
+      CMSSExpArray arr = null;
+      CMSSExpConditional cond = null;
+      int unit = unitVal;
+      if(e)
+      {
+         inst = e._class == class(CMSSExpInstance) ? (CMSSExpInstance)e : null;
+         arr = e._class == class(CMSSExpArray) ? (CMSSExpArray)e : null;
+         cond = e._class == class(CMSSExpConditional) ? (CMSSExpConditional)e : null;
+      }
+      // special handling for conditional with potential unitClass as a compute on conditional would not yield the unit
+      if(cond && (cond.expList.lastIterator.data._class == class(CMSSExpInstance) || cond.elseExp._class == class(CMSSExpInstance)))
+      {
+         FieldValue condValue {};
+         ExpFlags flagsCond = cond.condition.compute(condValue, evaluator, runtime, e.destType);
+         if(flagsCond.resolved && condValue.i)
+            inst = cond.expList.lastIterator.data._class == class(CMSSExpInstance) ? (CMSSExpInstance)cond.expList.lastIterator.data : null;
+         else if(flagsCond.resolved && cond.elseExp._class == class(CMSSExpInstance))
+            inst = (CMSSExpInstance)cond.elseExp;
+      }
       if(inst && inst.instance)
       {
          CMSSSpecName spec = (CMSSSpecName)inst.instance._class;
@@ -1633,7 +1649,7 @@ public:
          if(n && !strcmpi(n, "Meters"))     // TODO: make this generic
          {
             unit = 1; // meters
-            e = null;
+            /*e = null;
             for(i : inst.instance.members)
             {
                CMSSMemberInitList members = i;
@@ -1649,10 +1665,10 @@ public:
                }
                if(e) break;
             }
-            inst = null;
+            inst = null;*/
          }
-         else if(object)
-            applyInstanceStyle(object, mSet, inst, evaluator, flg);
+         if(object) //else if(object)
+            applyInstanceStyle(object, mSet, inst, evaluator, flg, unit);
       }
 
       if(arr)
@@ -1697,7 +1713,7 @@ public:
    }
 
    private static void ::applyInstanceStyle(void * object, StylesMask mask, CMSSExpInstance inst,
-      ECCSSEvaluator evaluator, ExpFlags * flg)
+      ECCSSEvaluator evaluator, ExpFlags * flg, int unit)
    {
       if(inst)
       {
@@ -1710,9 +1726,9 @@ public:
                if(mInit.initializer)
                {
                   StylesMask sm = mInit.stylesMask;
-                  if(sm & mask)
+                  if(sm & mask) // || unit
                   {
-                     applyStyle(object, sm & mask, evaluator, mInit.initializer, flg);
+                     applyStyle(object, sm & mask, evaluator, mInit.initializer, flg, unit);
                      mask &= ~sm;
                   }
                }
