@@ -234,7 +234,7 @@ public CMSSExpression simplifyResolved(FieldValue val, CMSSExpression e)
 
    if(e._class == class(CMSSExpBrackets) && ((CMSSExpBrackets)e).list && ((CMSSExpBrackets)e).list.list.count > 1)
       return e; // Do not simplify lists with more than one element
-   else if(e._class != class(CMSSExpString) && e._class != class(CMSSExpConstant) && e._class != class(CMSSExpInstance) && e._class != class(CMSSExpArray))
+   else if(e._class != class(CMSSExpString) && e._class != class(CMSSExpConstant) && e._class != class(CMSSExpInstance) && e._class != class(CMSSExpArray) && e._class != class(CMSSExpConditional))
    {
       CMSSExpression ne = (val.type.type == text) ? CMSSExpString { string = CopyString(val.s) } : CMSSExpConstant { constant = val };
       ne.destType = e.destType;
@@ -1090,7 +1090,10 @@ public:
          {
             CMSSExpression last = expList.lastIterator.data;   // CMSS Only currently supports a single expression...
             if(last)
+            {
+               last.destType = destType;
                flags = last.compute(value, evaluator, computeType, stylesClass);
+            }
          }
          else
             flags = elseExp.compute(value, evaluator, computeType, stylesClass);
@@ -1564,7 +1567,24 @@ public:
             value = { { integer, isDateTime = true }, i = (int64)(SecSince1970)dt };
             //value.type = fType;
          }
-         if(!expType || expType != class(DateTime))
+         else if(expType && expType.type == unitClass)
+         {
+            for(i : instance.members)
+            {
+               CMSSMemberInitList members = i;
+               for(m : members)
+               {
+                  CMSSMemberInit mInit = m;
+                  if(mInit.initializer)
+                  {
+                     CMSSExpression exp = mInit.initializer;
+                     //if(exp.destType)
+                        flags = exp.compute(value, evaluator, runtime, stylesClass);
+                  }
+               }
+            }
+         }
+         else if(!expType || expType != class(DateTime))
             value = { { blob }, b = instData };
          if(!flags)
             flags.resolved = true;
@@ -2128,7 +2148,34 @@ public:
                e.destType = destType;
                if(e._class == class(CMSSExpInstance))
                   ((CMSSExpInstance)e).targetMask = stylesMask;
+               else if(e._class == class(CMSSExpConditional))
+               {
+                  CMSSExpConditional cond = (CMSSExpConditional)e;
+                  if(cond.expList.lastIterator.data._class == class(CMSSExpInstance))
+                     ((CMSSExpInstance)cond.expList.lastIterator.data).targetMask = stylesMask;
+                  if(cond.elseExp._class == class(CMSSExpInstance))
+                     ((CMSSExpInstance)cond.elseExp).targetMask = stylesMask;
+               }
 
+               flags = e.compute(val, evaluator, preprocessing, stylesClass);
+               if(flags.resolved)
+                  initializer = simplifyResolved(val, e);
+            }
+         }
+      }
+      else if(type && type.type == unitClass)
+      {
+         if(initializer)
+         {
+            stylesMask = identifierStr && stylesClass && stylesClass.type != structClass
+               ? evaluator.evaluatorClass.maskFromString(identifierStr, stylesClass) : 0;
+            CMSSExpression e = initializer;
+            if(e)
+            {
+               FieldValue val { };
+               e.destType = type;
+               if(e._class == class(CMSSExpInstance))
+                  ((CMSSExpInstance)e).targetMask = stylesMask;
                flags = e.compute(val, evaluator, preprocessing, stylesClass);
                if(flags.resolved)
                   initializer = simplifyResolved(val, e);
