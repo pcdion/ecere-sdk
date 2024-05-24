@@ -1490,7 +1490,7 @@ public:
             {
                resolved = false;
                if(array)
-                  array.Free(), delete array;
+                  /*array.Free(), */delete array; // REVIEW:
             }
          }
          else
