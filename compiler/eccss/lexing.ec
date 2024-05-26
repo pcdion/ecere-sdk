@@ -337,7 +337,7 @@ public class CMSSLexer
                   if(!ch || (ch == quoteChar && !escaped))
                   {
                      const char * n = input + pos.pos+1;
-                     bool isContinued = false, isChar = input[start] == '\'';
+                     bool isContinued = false, isChar = false; //input[start] == '\'';
                      if(!isChar)
                      {
                         CMSSCodePosition np { pos.line, pos.col + 1, pos.pos + 1 };
