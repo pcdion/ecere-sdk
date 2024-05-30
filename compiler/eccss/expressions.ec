@@ -1321,7 +1321,7 @@ public:
 
             flags.resolved = false;
             if(computeType == preprocessing)
-               expType = evaluator.evaluatorClass.resolveFunction(evaluator, expValue, arguments, &flags);
+               expType = evaluator.evaluatorClass.resolveFunction(evaluator, expValue, arguments, &flags, destType);
             for(a : arguments; numArgs < 50)
             {
                flags.resolved = false;
