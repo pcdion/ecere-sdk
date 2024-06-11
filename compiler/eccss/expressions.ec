@@ -1319,14 +1319,15 @@ public:
          if(arguments)
          {
             bool nonResolved = false;
-            Iterator<CMSSExpression> aIt { arguments.list };
+            List<CMSSExpression> argsList = arguments.list;
+            Link aIt;
 
             flags.resolved = false;
             if(computeType == preprocessing)
                expType = evaluatorClass.resolveFunction(evaluator, expValue, arguments, &flags, destType);
-            while(aIt.Next())
+            for(aIt = argsList.first; aIt; aIt = aIt.next)
             {
-               CMSSExpression arg = aIt.data;
+               CMSSExpression arg = (CMSSExpression)(uintptr)aIt.data;
                FieldValue * argV = &args[numArgs++];
                flags.resolved = false;
                flags |= arg.compute(argV, evaluator, computeType, stylesClass);
