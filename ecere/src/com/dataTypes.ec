@@ -2208,8 +2208,8 @@ static char * Float_OnGetString(Class _class, float * data, char * string, void 
    {
       int numDigits = 9;
       float num = 0.01f;
-      char format[20];
-
+      char format[128];
+      // REVIEW: Use ccStrPrintDouble() instead?
       while(numDigits && num < f) numDigits--, num *= 10;
       sprintf(format, "%%.%df", numDigits);
       sprintf(string, format, f);
@@ -2304,7 +2304,7 @@ static char * Double_OnGetString(Class _class, double * data, char * string, voi
    {
       int numDigits = 17;
       double num = 0.01;
-      char format[20];
+      char format[128];
 
       while(numDigits && num < f) numDigits--, num *= 10;
       // REVIEW: %g means to pick the optimal between scientific (%e) vs. fixed-point (%lf)
