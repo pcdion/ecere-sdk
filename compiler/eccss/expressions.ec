@@ -1249,7 +1249,9 @@ public:
       ExpFlags flags { };
       FieldValue val { };
       ExpFlags expFlg = exp.compute(val, evaluator, computeType, stylesClass);
-      if(expFlg.resolved && evaluator != null && exp.expType && computeType == runtime)   // REVIEW: Can we check for runtime here?
+      // REVIEW: If the expression is really resolved during preprocessing, it might be possible to compute it already,
+      //         but some scenarios might not yet be handled properly
+      if(expFlg.resolved && evaluator != null && exp.expType && computeType == runtime)
       {
          DataMember prop = eClass_FindDataMember(exp.expType, member.string, exp.expType.module, null, null);
          if(!prop)
@@ -1341,8 +1343,10 @@ public:
             }
             if(nonResolved) flags.resolved = false;
          }
+         // REVIEW: If the expression is really resolved during preprocessing, it might be possible to compute it already,
+         //         but some scenarios might not yet be handled properly
          // We need to evaluate the function if resolved is true (should not yet be set if e.g., featureID / geometry is needed)
-         if(evaluator != null && flags.resolved)
+         if(evaluator != null && flags.resolved && computeType == runtime)
             expType = evaluatorClass.computeFunction(evaluator, value, expValue, args, numArgs, &flags);
       }
       return flags;
@@ -1554,7 +1558,8 @@ public:
          flags.resolved = resolved;
       }
       else
-         //if(!resolved) flags.resolved = false;
+         // REVIEW: Shouldn't resolved sometimes be set in preprocessing, if all elements are resolved?
+         // if(!resolved) flags.resolved = false;
          flags.resolved = false;
       return flags;
    }
