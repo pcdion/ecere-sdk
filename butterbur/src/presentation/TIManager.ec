@@ -137,7 +137,7 @@ enum LWFMHorizontalAlignment
 };
 enum LWFMVerticalAlignment
 {
-   baseline, top = 4, middle = 8, bottom = 16 // 4
+   baseline, top = 1, middle = 2, bottom = 4
 };
 
 /// FONT MANAGER /////////////////////////////////////
