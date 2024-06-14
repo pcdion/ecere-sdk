@@ -2166,7 +2166,7 @@ static void cleanFinalDigits(char * number, int numDigits)
                while(--first9 > 0)
                {
                   if(first9 != c)
-                     if(number[first9] < '9')
+                     if(number[first9] && number[first9] < '9')   // REVIEW:
                      {
                         number[first9]++;
                         break;
