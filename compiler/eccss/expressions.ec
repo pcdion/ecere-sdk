@@ -2424,6 +2424,11 @@ public:
          assignType.print(out, indent, o);
          if(slType && (!initializer || initializer._class != class(CMSSExpInstance) || !((CMSSExpInstance)initializer).printsAsMultiline))
             out.Print(" "); // Not multiline
+         else if(assignType == addAssign)
+         {
+            out.PrintLn("");
+            printIndent(indent, out);
+         }
       }
       if(initializer)
          initializer.print(out, indent, o);
@@ -2461,7 +2466,8 @@ public:
          lastMember = init.dataMember;
          if(list.GetNext(it.pointer))
          {
-            if(o.multiLineInstance)
+            // NOTE: can multiLineInstance keep 'true' from call to CMSSExpInstance::print?
+            if(o.multiLineInstance || init.assignType == addAssign)
             {
                out.PrintLn(",");
                printIndent(indent, out);
