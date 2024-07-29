@@ -1511,6 +1511,8 @@ public:
    }
 }
 
+extern int __ecereVMethodID_class_OnFree;
+
 public class CMSSExpInstance : CMSSExpression
 {
 public:
@@ -1597,6 +1599,12 @@ public:
                   eSystem_Delete(instData);
                }
                instData = null;
+            }
+            else if(expType && expType.type == structClass)
+            {
+               const void *(* onFree)(void *, void *) = expType._vTbl[__ecereVMethodID_class_OnFree];
+               onFree(expType, instData);
+               delete instData;
             }
             else
                delete instData;
@@ -1736,6 +1744,12 @@ public:
                   expType.Destructor(instData);
                eSystem_Delete(instData);
             }
+         }
+         else if(expType && expType.type == structClass)
+         {
+            const void *(* onFree)(void *, void *) = expType._vTbl[__ecereVMethodID_class_OnFree];
+            onFree(expType, instData);
+            delete instData;
          }
          else
             delete instData;
